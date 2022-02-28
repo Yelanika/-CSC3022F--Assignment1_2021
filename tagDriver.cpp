@@ -7,6 +7,7 @@
  * 
  * ***/
 
+#include "tag.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -37,6 +38,8 @@ int main (int argc, char* argv[]) {
 
     in.close();
 
+    GNSSEN002::getTag(tagInfo);
+    
     std::cout << tagInfo.size() << std::endl;
     return 0;
 }

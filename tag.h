@@ -21,7 +21,7 @@ namespace GNSSEN002 {
         std::string tagText;
     };
 
-        
+    std::string getTag(std::vector<std::string> tagInfo);
 }
 
 #endif
