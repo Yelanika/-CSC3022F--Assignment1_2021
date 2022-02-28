@@ -7,8 +7,8 @@
  * 
  * ***/
 
-#ifndef tag.h
-#define tag.h
+#ifndef tag_h
+#define tag_h
 
 #include <string>
 #include <vector>
@@ -20,6 +20,8 @@ namespace GNSSEN002 {
         int noTagPairs;
         std::string tagText;
     };
+
+        
 }
 
 #endif
