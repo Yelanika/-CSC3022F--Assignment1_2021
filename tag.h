@@ -15,13 +15,17 @@
 
 namespace GNSSEN002 {
 
+    // std::vector<std::string> tags;
+    // std::vector<std::string> text;
+
     struct TagStruct {
         std::string tagName;
         int noTagPairs;
         std::string tagText;
     };
 
-    std::string getTag(std::vector<std::string> tagInfo);
+    std::string ExtractTagsandText(std::vector<std::string> tagInfo);
+
 }
 
 #endif

@@ -38,8 +38,12 @@ int main (int argc, char* argv[]) {
 
     in.close();
 
-    GNSSEN002::getTag(tagInfo);
     
-    std::cout << tagInfo.size() << std::endl;
+
+    if (tagInfo.size() > 0)
+        GNSSEN002::ExtractTagsandText(tagInfo);
+    else    
+        std::cout << "There is no data in the file provided: " << filename << std::endl;
+    //std::cout << tagInfo.size() << std::endl;
     return 0;
 }
