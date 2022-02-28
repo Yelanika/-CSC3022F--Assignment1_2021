@@ -1,3 +1,5 @@
 simple.txt
 .vscode/settings.json
 .gitignore
+tag.o
+tagDriver.exe

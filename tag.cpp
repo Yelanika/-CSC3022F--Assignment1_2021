@@ -35,7 +35,7 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
         std::size_t EtagPos = temp.find(">");
 
         std::string tag = temp.substr(StagPos,EtagPos-StagPos+1);
-        std::cout << tag << std::endl;
+       // std::cout << tag << std::endl;
         tags.push_back(tag);
 
         //Getting the text
@@ -45,7 +45,7 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
         std::size_t EtextPos = temp.find(">");
 
         std::string tText = temp.substr(0,StextPos);
-        std::cout << tText << std::endl;
+       // std::cout << tText << std::endl;
         text.push_back(tText);
     }
 
@@ -72,12 +72,23 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
                 }
             }
 
-            if (found)         //if found is true
-                Tag.push_back({tags[k_tag-1], 1, text[k_tag-1]});
-            else
+            if (found)  {       //if found is true
+                Tag[k_tag-1].tagName = tags[k_tag-1];
+                Tag[k_tag-1].noTagPairs++;
+                Tag[k_tag-1].tagText += " : " + text[k_tag-1];
+            }
+            else                //if a new tag name is found
                 Tag.push_back({tags[i], 1, text[i]});  
         }
     }
+
+    for (int j = 0; j < Tag.size(); ++j) {
+        std::cout << Tag[j].tagName << std::endl;
+        std::cout << Tag[j].noTagPairs << std::endl;
+        std::cout << Tag[j].tagText << std::endl;
+    }
+
+
 
     std::cout << "Testing 2" << std::endl;
     return "";
