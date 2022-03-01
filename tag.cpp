@@ -32,6 +32,7 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
 
         //Getting the tag
         std::size_t StagPos = temp.find("<");
+        std::cout << StagPos << " " << i << std::endl;
         std::size_t EtagPos = temp.find(">");
 
         std::string tag = temp.substr(StagPos,EtagPos-StagPos+1);

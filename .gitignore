@@ -3,3 +3,7 @@ simple.txt
 .gitignore
 tag.o
 tagDriver.exe
+edge_cases.txt
+long.txt
+.gitignore
+tagDriver.o
