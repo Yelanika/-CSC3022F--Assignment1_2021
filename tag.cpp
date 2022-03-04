@@ -27,7 +27,7 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
     std::vector<std::string> tags;
     std::vector<std::string> text;
 
-    std::cout << "Testing 1" << std::endl;  
+    //std::cout << "Testing 1" << std::endl;  
 
     for (int i = 0; i < tagInfo.size(); ++i) {
 
@@ -83,9 +83,9 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
         
     }
 
-    std::cout << "Testing 2" << std::endl;
+    //std::cout << "Testing 2" << std::endl;
     std::vector<GNSSEN002::TagStruct> Tag;
-    std::cout << "Testing 2" << std::endl;
+    //std::cout << "Testing 2" << std::endl;
     
 
     Tag.push_back({tags[0], 1, text[0]});
@@ -96,8 +96,10 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
             bool found = false;
             int k_tag;
 
+            std::cout << tags[i] << " " << text[i] << std::endl;
+
             //search for the same tag
-            for (k_tag = 1; k_tag < tags.size(); ++k_tag) { //k_tag = position of the tag in vector
+            for (k_tag = 1; k_tag < i+1; ++k_tag) { //k_tag = position of the tag in vector
 
                 //condition: to not check same tag against each other
                 if ((k_tag-1) != i) {
@@ -107,28 +109,31 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
                     }
                 }
             }
-
+            
             if (found)  {       //if found is true
                // Tag[k_tag-1].tagName = tags[k_tag-1];
-                Tag[k_tag-1].noTagPairs++;
+               // std::cout << "FOUND" << std::endl;
                // std::cout << i << " - " << text[i] << std::endl;
+
+                Tag[k_tag-1].noTagPairs++;
                 Tag[k_tag-1].tagText += " : " + text[i];
-               // std::cout << Tag[k_tag-1].tagText << " - " << text[k_tag-1] << std::endl;
+                //std::cout << Tag[k_tag-1].tagText << " - " << text[k_tag-1] << std::endl;
             }
             else                //if a new tag name is found
                 Tag.push_back({tags[i], 1, text[i]});  
+
+            //std::cout << "End of loop" << std::endl;
         }
+
     }
+    //std::cout << "Testing 4" << std::endl;
+    // for (int j = 0; j < Tag.size(); ++j) {
+    //     std::cout << Tag[j].tagName << std::endl;
+    //     std::cout << Tag[j].noTagPairs << std::endl;
+    //     std::cout << Tag[j].tagText << std::endl;
+    // }
 
-    for (int j = 0; j < Tag.size(); ++j) {
-        std::cout << Tag[j].tagName << std::endl;
-        std::cout << Tag[j].noTagPairs << std::endl;
-        std::cout << Tag[j].tagText << std::endl;
-    }
-
-
-
-    std::cout << "Testing 3" << std::endl;
+    std::cout << "Testing Passed" << std::endl;
     return "";
     
 }
