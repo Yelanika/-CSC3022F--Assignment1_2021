@@ -33,7 +33,7 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
 
         std::string temp = tagInfo[i];
 
-        //variables to help identify if the line has any values
+        //variables to help identify if the line has any values or is empty 
         std::string temp2 = temp;
         //temp2.erase(std::remove(temp2.begin(),temp2.end(),::isspace));
         //std::cout << temp2 << std::endl;
@@ -44,6 +44,7 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
                 spaces++;
         }
 
+        bool found_endTag = false; //to check if the end tag is found first
         //if the no. of spaces in the line = length of the line-1, then go to next line
         if (spaces == (temp2.length()-1))
             continue;
@@ -52,9 +53,15 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
             //Getting the tag
             std::size_t StagPos = temp.find("<");
 
-            //if there are no tags in the current line
+            //if there is a tag in the current line
             if (StagPos!=std::string::npos) {
                 //std::cout << StagPos << " " << i << std::endl;
+
+                std::size_t EndTagPos = temp.find("/");
+
+                if (EndTagPos!=std::string::npos) //if an endtag is found
+                    continue;
+                else {     
                 std::size_t EtagPos = temp.find(">");
 
                 std::string tag = temp.substr(StagPos,EtagPos-StagPos+1);
@@ -64,8 +71,9 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
                 //current line without the tag
                 temp = temp.substr(EtagPos+1);  
                 //std::cout << temp << " " << EtagPos << std::endl;
+                }
             }
-
+            
             //Getting the text - looking for end tag
             std::size_t StextPos = temp.find("<");
 
