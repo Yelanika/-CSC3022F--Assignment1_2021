@@ -17,11 +17,10 @@
 
 /***
  * 
- * getTag -  
+ * ExtractTagsandText - 
  * 
  * 
  * **/
-
 std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
     
     std::vector<std::string> tags;
@@ -128,7 +127,6 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
         std::cout << Tag[j].noTagPairs << std::endl;
         std::cout << Tag[j].tagText << std::endl;
     }
-
     return "";
     
 }
