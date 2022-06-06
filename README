@@ -4,5 +4,8 @@
  * GNSSEN002
  * 
  * tag.h 
- * 
  * ***/
+
+- running 'make' will compile the program
+- running './tagDriver.exe' will run the program with simple.txt
+- running './tagDriver.exe textFileName.txt' will run the program with the textfile of the users choosing 

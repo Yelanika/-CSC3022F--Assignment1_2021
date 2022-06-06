@@ -1,4 +1,4 @@
-CC = g++
+CC = g++ 
 CCFLAGS = -std=c++2a
 
 tagDriver.exe: tagDriver.o tag.o

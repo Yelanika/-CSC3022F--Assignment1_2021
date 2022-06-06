@@ -46,14 +46,12 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
             continue;
         else {              //else capture the data in the line
 
-            //std::cout << "1: " << temp << std::endl;
-
             //Getting the tag
             std::size_t StagPos = temp.find("<");
 
             //if there is a tag in the current line
             if (StagPos!=std::string::npos) {
-                std::size_t EtagPos = temp.find(">");
+                std::size_t EtagPos = temp.find(">");   //finding the end of the tag 
                 std::string tag = temp.substr(StagPos,EtagPos-StagPos+1);
 
                 std::size_t EndTagPos = tag.find("/");
@@ -65,27 +63,16 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
 
                     //current line without the tag
                     temp = temp.substr(EtagPos+1);
-                    //std::cout << temp.length() << std::endl;
 
                     //Check for text once the tag is removed 
                     if (temp.length() == 0)
                         found_endTag = true;
 
-                    // std::string temp3 = temp;
-                    // int spaces_temp3 = 0;
-                    // for (int j = 0; j < temp3.length(); ++j) {
-                    //     if (temp3.at(j) == ' ')
-                    //         spaces_temp3++;
-                    // }
-
-                    // if (spaces_temp3 == (temp3.length()-1))
-                    //     found_endTag = true;
                 }
                       
                 
             }
 
-            //std::cout << "2: " << found_endTag << std::endl;
             //if the end tag is found first - then skip this section of pushing back text
             if (found_endTag == false) {    
                 //Getting the text - looking for end tag
@@ -112,8 +99,6 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
             bool found = false;
             int k_tag;
 
-            //std::cout << i << " " << tags[i] << " " << text[i] << std::endl;
-
             //search for the same tag
             for (k_tag = 1; k_tag < i+1; ++k_tag) { //k_tag = position of the tag in vector
 
@@ -137,14 +122,13 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
 
     }
 
-    //std::cout << "Testing 4" << std::endl;
+
     for (int j = 0; j < Tag.size(); ++j) {
         std::cout << Tag[j].tagName << std::endl;
         std::cout << Tag[j].noTagPairs << std::endl;
         std::cout << Tag[j].tagText << std::endl;
     }
 
-    //std::cout << "Testing Passed" << std::endl;
     return "";
     
 }
