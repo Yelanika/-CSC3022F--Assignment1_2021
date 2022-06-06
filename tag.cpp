@@ -15,6 +15,7 @@
 #include <cctype>
 #include <algorithm>
 
+
 /***
  * 
  * ExtractTagsandText - 
@@ -88,8 +89,7 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
             }
         }        
     }
-
-    std::vector<GNSSEN002::TagStruct> Tag;  
+      
     Tag.push_back({tags[0], 1, text[0]});
 
     if (tags.size() > 1) {
@@ -121,13 +121,23 @@ std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
 
     }
 
+    return "";
+    
+}
+
+/***
+ * 
+ * ExtractTagsandText - 
+ * 
+ * 
+ * **/
+std::string GNSSEN002::printTag() {
+    //std::cout << "bitch" << std::endl;
 
     for (int j = 0; j < Tag.size(); ++j) {
         std::cout << Tag[j].tagName << std::endl;
-        std::cout << Tag[j].noTagPairs << std::endl;
-        std::cout << Tag[j].tagText << std::endl;
     }
+
     return "";
-    
 }
     

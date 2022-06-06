@@ -17,10 +17,12 @@
 
 //namespace GNSSEN002 {}
 int main (int argc, char* argv[]) {
-
-    std::vector<GNSSEN002::TagStruct> Tag;    
+  
     char option = 'm';      // m - Menu
     std::string filename = "";        
+
+    
+
 
     if (argc == 1) {        //No parameters should be entered
 
@@ -31,7 +33,7 @@ int main (int argc, char* argv[]) {
                     std::cout << "r: Read and process tag file" << std::endl;
                     std::cout << "p: Print all tags" << std::endl;
                     std::cout << "d: Write tags and data to a file called tag.txt" << std::endl;
-                    std::cout << "r: Print tag for given tag" << std::endl;
+                    std::cout << "l: Print tag for given tag" << std::endl;
                     std::cout << "q: Quit" << std::endl;
 
                     std::cin >> option;     //User input of option
@@ -64,17 +66,21 @@ int main (int argc, char* argv[]) {
 
                     if (tagInfo.size() > 0) {   //if there is infomation int the textfile
                         GNSSEN002::ExtractTagsandText(tagInfo);
+                        //std::cout << Tag[0].tagName << std::endl;
                     }
                     else    //If there is no infomation in the textfile
-                        std::cout << "Error: There is no data in the file provided: " << filename << std::endl;
+                        std::cout << "Error: There is no data in the file provided. " << filename << std::endl;
                         
                     option = 'm';
                     break;
                 }
                 case 'p' : {        // just printing the tags
-                    for (int j = 0; j < Tag.size(); ++j) {
-                        std::cout << Tag[j].tagName << std::endl;
-                    }
+                    // std::cout << "bitch" << std::endl;
+                    // for (int j = 0; j < Tag.size(); ++j) {
+                    //     std::cout << Tag[j].tagName << std::endl;
+                    // }
+                    GNSSEN002::printTag();
+
                     option = 'm';
                     break;
                 }
@@ -85,17 +91,17 @@ int main (int argc, char* argv[]) {
                     break;
                 }
                 case 'l' : {        //printing tag data for given tag
-                
+
                     std::string tagInput = "";
                     std::cin >> tagInput;
 
                     //Looping through the stored tags searching for the tag input 
-                    for (int j = 0; j < Tag.size(); ++j) {
+                    for (int j = 0; j < GNSSEN002::Tag.size(); ++j) {
 
-                        if ((Tag[j].tagName) ==  tagInput) {    // if tag is found
+                        if ((GNSSEN002::Tag[j].tagName) ==  tagInput) {    // if tag is found
 
-                            std::cout << "No. of Tag Pairs: " << Tag[j].noTagPairs << std::endl;
-                            std::cout << "Tag Text: " << Tag[j].tagText << std::endl;
+                            std::cout << "No. of Tag Pairs: " << GNSSEN002::Tag[j].noTagPairs << std::endl;
+                            std::cout << "Tag Text: " << GNSSEN002::Tag[j].tagText << std::endl;
 
                             option = 'm';
                             break;                            
@@ -115,4 +121,6 @@ int main (int argc, char* argv[]) {
             }
         }
     } 
+
+    return 1;
 }
