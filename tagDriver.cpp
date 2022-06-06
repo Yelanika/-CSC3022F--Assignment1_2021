@@ -84,8 +84,26 @@ int main (int argc, char* argv[]) {
                     option = 'm';
                     break;
                 }
-                case 'l' : {
+                case 'l' : {        //printing tag data for given tag
+                
+                    std::string tagInput = "";
+                    std::cin >> tagInput;
 
+                    //Looping through the stored tags searching for the tag input 
+                    for (int j = 0; j < Tag.size(); ++j) {
+
+                        if ((Tag[j].tagName) ==  tagInput) {    // if tag is found
+
+                            std::cout << "No. of Tag Pairs: " << Tag[j].noTagPairs << std::endl;
+                            std::cout << "Tag Text: " << Tag[j].tagText << std::endl;
+
+                            option = 'm';
+                            break;                            
+                        }
+                    }
+
+                    //if tag could not be found
+                    std::cout << "The tag '" << tagInput << "' could not be found." << std::endl;
                     option = 'm';
                     break;
                 }
