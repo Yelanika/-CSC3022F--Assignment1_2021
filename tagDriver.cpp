@@ -13,10 +13,12 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
+//namespace GNSSEN002 {}
 int main (int argc, char* argv[]) {
-
-    // std::vector<std::string> tagInfo;
+    std::vector<GNSSEN002::TagStruct> Tag;
+    
     // std::string filename = "simple.txt";
 
     // if (argc == 1)
@@ -61,21 +63,45 @@ int main (int argc, char* argv[]) {
                     std::cout << "r: Print tag for given tag" << std::endl;
                     std::cout << "q: Quit" << std::endl;
 
-                    std::cin >> option;
+                    std::cin >> option;     //User input of option
 
+                    std::cout << "choose: " << option << std::endl;
                     break;
                 }
-                case 'r' : {        //User input of tag file
+                case 'r' : {            //Getting input file 
 
-                    std::cin >> filename;
+                    std::cin >> filename;       //User input of tag file
 
+                    //BEGINNING OF READING FILE
+                    std::ifstream in(filename);                    
+                    if(!in) {       //if file cannot be open then error printed & goes back to menu
+                        std::cout << "Error: File could not be open." << filename << std::endl;
+                        option = 'm';       
+                        break;       
+                    }
 
+                    std::string line;
+                    std::vector<std::string> tagInfo;       //holds everyline in the textfile
 
+                    //Getting the infomation from the textfile
+                    while (std::getline(in, line)) {
+                        tagInfo.push_back(line);
+                    }
+
+                    in.close();         //closing input file
+                    //END OF READING FILE
+
+                    if (tagInfo.size() > 0) {   //if there is infomation int the textfile
+                        GNSSEN002::ExtractTagsandText(tagInfo);
+                    }
+                    else    //If there is no infomation in the textfile
+                        std::cout << "Error: There is no data in the file provided: " << filename << std::endl;
+                        
                     option = 'm';
                     break;
                 }
                 case 'p' : {        // just printing the tags
-
+            
                     option = 'm';
                     break;
                 }
