@@ -15,129 +15,145 @@
 #include <cctype>
 #include <algorithm>
 
+namespace GNSSEN002 {
+    /***
+     * 
+     * ExtractTagsandText() - 
+     * 
+     * 
+     * **/
+    void GNSSEN002ExtractTagsandText(std::vector<std::string> tagInfo) {
+        
+        std::vector<std::string> tags;
+        std::vector<std::string> text; 
 
-/***
- * 
- * ExtractTagsandText - 
- * 
- * 
- * **/
-std::string GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
-    
-    std::vector<std::string> tags;
-    std::vector<std::string> text; 
+        for (int i = 0; i < tagInfo.size(); ++i) {
 
-    for (int i = 0; i < tagInfo.size(); ++i) {
+            std::string temp = tagInfo[i];
 
-        std::string temp = tagInfo[i];
+            bool found_endTag = false; //to check if the end tag is found first
 
-        bool found_endTag = false; //to check if the end tag is found first
+            //variables to help identify if the line has any values or is empty 
+            std::string temp2 = temp;
+            int spaces_temp2 = 0;
+            for (int j = 0; j < temp2.length(); ++j) {
+                if (temp2.at(j) == ' ')
+                    spaces_temp2++;
+            }       
 
-        //variables to help identify if the line has any values or is empty 
-        std::string temp2 = temp;
-        int spaces_temp2 = 0;
-        for (int j = 0; j < temp2.length(); ++j) {
-            if (temp2.at(j) == ' ')
-                spaces_temp2++;
-        }       
+            //if the no. of spaces in the line = length of the line-1, then iterate again and go to next line
+            if (spaces_temp2 == (temp2.length()-1))
+                continue;
+            else {              //else capture the data in the line
 
-        //if the no. of spaces in the line = length of the line-1, then iterate again and go to next line
-        if (spaces_temp2 == (temp2.length()-1))
-            continue;
-        else {              //else capture the data in the line
+                //Getting the tag
+                std::size_t StagPos = temp.find("<");
 
-            //Getting the tag
-            std::size_t StagPos = temp.find("<");
+                //if there is a tag in the current line
+                if (StagPos!=std::string::npos) {
+                    std::size_t EtagPos = temp.find(">");   //finding the end of the tag 
+                    std::string tag = temp.substr(StagPos,EtagPos-StagPos+1);
 
-            //if there is a tag in the current line
-            if (StagPos!=std::string::npos) {
-                std::size_t EtagPos = temp.find(">");   //finding the end of the tag 
-                std::string tag = temp.substr(StagPos,EtagPos-StagPos+1);
+                    std::size_t EndTagPos = tag.find("/");
 
-                std::size_t EndTagPos = tag.find("/");
-
-                if (EndTagPos!=std::string::npos)  //if an endtag is found
-                    found_endTag = true;
-                else {
-                    tags.push_back(tag);
-
-                    //current line without the tag
-                    temp = temp.substr(EtagPos+1);
-
-                    //Check for text once the tag is removed 
-                    if (temp.length() == 0)
+                    if (EndTagPos!=std::string::npos)  //if an endtag is found
                         found_endTag = true;
+                    else {
+                        tags.push_back(tag);
 
+                        //current line without the tag
+                        temp = temp.substr(EtagPos+1);
+
+                        //Check for text once the tag is removed 
+                        if (temp.length() == 0)
+                            found_endTag = true;
+
+                    }
+                    
                 }
-                      
+
+                //if the end tag is found first - then skip this section of pushing back text
+                if (found_endTag == false) {    
+                    //Getting the text - looking for end tag
+                    std::size_t StextPos = temp.find("<");
+
+                    //if end tag is found & we are getting the text
+                    if (StextPos!=std::string::npos) {
+                        std::size_t EtextPos = temp.find(">");
+                        std::string tText = temp.substr(0,StextPos);
+                        text.push_back(tText);
+                    }
+                    else    //else there must only be string left in the current line 
+                        text.push_back(temp);
+                }
+            }        
+        }
+        
+        Tag.push_back({tags[0], 1, text[0]});
+
+        if (tags.size() > 1) {
+            for (int i = 1; i < tags.size(); ++i) {
                 
-            }
+                bool found = false;
+                int k_tag;
 
-            //if the end tag is found first - then skip this section of pushing back text
-            if (found_endTag == false) {    
-                //Getting the text - looking for end tag
-                std::size_t StextPos = temp.find("<");
+                //search for the same tag
+                for (k_tag = 1; k_tag < i+1; ++k_tag) { //k_tag = position of the tag in vector
 
-                //if end tag is found & we are getting the text
-                if (StextPos!=std::string::npos) {
-                    std::size_t EtextPos = temp.find(">");
-                    std::string tText = temp.substr(0,StextPos);
-                    text.push_back(tText);
-                }
-                else    //else there must only be string left in the current line 
-                    text.push_back(temp);
-            }
-        }        
-    }
-      
-    Tag.push_back({tags[0], 1, text[0]});
-
-    if (tags.size() > 1) {
-        for (int i = 1; i < tags.size(); ++i) {
-            
-            bool found = false;
-            int k_tag;
-
-            //search for the same tag
-            for (k_tag = 1; k_tag < i+1; ++k_tag) { //k_tag = position of the tag in vector
-
-                //condition: to not check same tag against each other
-                if ((k_tag-1) != i) {
-                    if (tags[i] == tags[k_tag-1]) {
-                        found = true;
-                        break;      //break out of loop
+                    //condition: to not check same tag against each other
+                    if ((k_tag-1) != i) {
+                        if (tags[i] == tags[k_tag-1]) {
+                            found = true;
+                            break;      //break out of loop
+                        }
                     }
                 }
-            }
-            
-            if (found)  {       //if found is true
-                Tag[k_tag-1].noTagPairs++;
-                Tag[k_tag-1].tagText += " : " + text[i];
-            }
-            else                //if a new tag name is found
-                Tag.push_back({tags[i], 1, text[i]});  
+                
+                if (found)  {       //if found is true
+                    Tag[k_tag-1].noTagPairs++;
+                    Tag[k_tag-1].tagText += " : " + text[i];
+                }
+                else                //if a new tag name is found
+                    Tag.push_back({tags[i], 1, text[i]});  
 
+            }
+
+        }
+        
+    }
+
+    /**** 
+     * printTag() -  
+     * 
+     * **/
+    void printTag() {
+        //std::cout << "bitch" << std::endl;
+
+        for (int j = 0; j < Tag.size(); ++j) {
+            std::cout << Tag[j].tagName << std::endl;
         }
 
     }
 
-    return "";
-    
-}
+    /**** 
+     * printTagInfo() - printing tag data for given tag
+     * [option l]
+     * **/
+    void printTagInfo(std::string inputTagName) {
+        
+        //Looping through the stored tags searching for the tag input 
+        for (int j = 0; j < Tag.size(); ++j) {
+            if (Tag[j].tagName == inputTagName) {
+                std::cout << "No. of Tag Pairs: " << GNSSEN002::Tag[j].noTagPairs << std::endl;
+                std::cout << "Tag Text: " << GNSSEN002::Tag[j].tagText << std::endl;
+                return true;
+            }
+        }
 
-/***
- * 
- * ExtractTagsandText - 
- * 
- * 
- * **/
-std::string GNSSEN002::printTag() {
-    //std::cout << "bitch" << std::endl;
-
-    for (int j = 0; j < Tag.size(); ++j) {
-        std::cout << Tag[j].tagName << std::endl;
+        std::cout << "The tag '" << inputTagName << "' could not be found." << std::endl;
+        return false;
     }
 
-    return "";
-}
+
     
+}   

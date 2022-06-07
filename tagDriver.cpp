@@ -3,7 +3,7 @@
  * Yelanika Gunasekara
  * GNSSEN002
  * 
- * tag.cpp
+ * tagDriver.cpp
  * 
  * ***/
 
@@ -19,10 +19,7 @@
 int main (int argc, char* argv[]) {
   
     char option = 'm';      // m - Menu
-    std::string filename = "";        
-
-    
-
+    std::string filename = "";   
 
     if (argc == 1) {        //No parameters should be entered
 
@@ -75,10 +72,7 @@ int main (int argc, char* argv[]) {
                     break;
                 }
                 case 'p' : {        // just printing the tags
-                    // std::cout << "bitch" << std::endl;
-                    // for (int j = 0; j < Tag.size(); ++j) {
-                    //     std::cout << Tag[j].tagName << std::endl;
-                    // }
+                
                     GNSSEN002::printTag();
 
                     option = 'm';
@@ -86,7 +80,6 @@ int main (int argc, char* argv[]) {
                 }
                 case 'd' : {        //writing tags and data to file(tag.txt)
 
-                    
                     option = 'm';
                     break;
                 }
@@ -94,22 +87,8 @@ int main (int argc, char* argv[]) {
 
                     std::string tagInput = "";
                     std::cin >> tagInput;
+                    GNSSEN002::printTagInfo(tagInput);
 
-                    //Looping through the stored tags searching for the tag input 
-                    for (int j = 0; j < GNSSEN002::Tag.size(); ++j) {
-
-                        if ((GNSSEN002::Tag[j].tagName) ==  tagInput) {    // if tag is found
-
-                            std::cout << "No. of Tag Pairs: " << GNSSEN002::Tag[j].noTagPairs << std::endl;
-                            std::cout << "Tag Text: " << GNSSEN002::Tag[j].tagText << std::endl;
-
-                            option = 'm';
-                            break;                            
-                        }
-                    }
-
-                    //if tag could not be found
-                    std::cout << "The tag '" << tagInput << "' could not be found." << std::endl;
                     option = 'm';
                     break;
                 }
