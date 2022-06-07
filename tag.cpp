@@ -17,12 +17,10 @@
 
 namespace GNSSEN002 {
     /***
-     * 
-     * ExtractTagsandText() - 
-     * 
+     * * ExtractTagsandText() - * 
      * 
      * **/
-    void GNSSEN002ExtractTagsandText(std::vector<std::string> tagInfo) {
+    void ExtractTagsandText(std::vector<std::string> tagInfo) {
         
         std::vector<std::string> tags;
         std::vector<std::string> text; 
@@ -67,9 +65,7 @@ namespace GNSSEN002 {
                         //Check for text once the tag is removed 
                         if (temp.length() == 0)
                             found_endTag = true;
-
-                    }
-                    
+                    }                    
                 }
 
                 //if the end tag is found first - then skip this section of pushing back text
@@ -87,8 +83,7 @@ namespace GNSSEN002 {
                         text.push_back(temp);
                 }
             }        
-        }
-        
+        }        
         Tag.push_back({tags[0], 1, text[0]});
 
         if (tags.size() > 1) {
@@ -123,16 +118,14 @@ namespace GNSSEN002 {
     }
 
     /**** 
-     * printTag() -  
-     * 
+     * printTag() -  printing only the tags
+     * [option p]
      * **/
     void printTag() {
-        //std::cout << "bitch" << std::endl;
 
         for (int j = 0; j < Tag.size(); ++j) {
             std::cout << Tag[j].tagName << std::endl;
         }
-
     }
 
     /**** 
@@ -146,14 +139,22 @@ namespace GNSSEN002 {
             if (Tag[j].tagName == inputTagName) {
                 std::cout << "No. of Tag Pairs: " << GNSSEN002::Tag[j].noTagPairs << std::endl;
                 std::cout << "Tag Text: " << GNSSEN002::Tag[j].tagText << std::endl;
-                return true;
             }
         }
 
+        //if the tag input could not be found
         std::cout << "The tag '" << inputTagName << "' could not be found." << std::endl;
-        return false;
     }
 
-
+    /**** 
+     * writeTagInfoToFile() -  writing tag data to a file called tag.txt
+     * [option d]
+     * **/
+    void writeTagInfoToFile() {
+        
+        // for (int j = 0; j < Tag.size(); ++j) {
+        //     std::cout << Tag[j].tagName << std::endl;
+        // }
+    }
     
 }   

@@ -24,9 +24,7 @@ namespace GNSSEN002 {
     std::vector<TagStruct> Tag;
     void ExtractTagsandText(std::vector<std::string> tagInfo);
     void printTag();
-    void printTagInfo(std::string inputTagName);
-
-    
+    void printTagInfo(std::string inputTagName);    
 
 }
 
