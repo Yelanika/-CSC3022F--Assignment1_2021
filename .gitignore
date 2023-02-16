@@ -1,9 +1,5 @@
-simple.txt
-.vscode/settings.json
+*.exe
+*.txt
+*.o
+.vscode/*
 .gitignore
-tag.o
-tagDriver.exe
-edge_cases.txt
-long.txt
-.gitignore
-tagDriver.o
