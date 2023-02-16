@@ -62,7 +62,8 @@ int main (int argc, char* argv[]) {
                     //END OF READING FILE
 
                     if (tagInfo.size() > 0) {   //if there is infomation int the textfile
-                        GNSSEN002::ExtractTagsandText(tagInfo);
+                        std::cout << "Tags and text" << std::endl; //for testing
+                        //GNSSEN002::ExtractTagsandText(tagInfo);
                         //std::cout << Tag[0].tagName << std::endl;
                     }
                     else    //If there is no infomation in the textfile
@@ -73,7 +74,8 @@ int main (int argc, char* argv[]) {
                 }
                 case 'p' : {        // just printing the tags
                 
-                    GNSSEN002::printTag();
+                    //GNSSEN002::printTag();
+                    std::cout << "just tags" << std::endl;  //testing
 
                     option = 'm';
                     break;
@@ -87,7 +89,8 @@ int main (int argc, char* argv[]) {
 
                     std::string tagInput = "";
                     std::cin >> tagInput;
-                    GNSSEN002::printTagInfo(tagInput);
+                    //GNSSEN002::printTagInfo(tagInput);
+                    std::cout << "printing tag info" << std::endl;  //testing
 
                     option = 'm';
                     break;
