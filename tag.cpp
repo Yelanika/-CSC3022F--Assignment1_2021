@@ -71,7 +71,7 @@
                     //if (find_ClosingTag != std::string::npos)
                         //nestedTag_no--;
                         
-                    //Tag.push_back({tags[i], 1, text[i]});
+                    
                     //else //opening tag
                         //tags.push_back(tag);
                         //nestedTag_no++;
@@ -79,14 +79,21 @@
                     //option = assign
                     
                 //case : text
-                    //
+                    //if tagInText = true
+                        //std::size_t TagPos_Start = TagInfo_currentLine.find("<");
+                        //tagInfo = TagInfo_currentLine.substr(0,TagPos_Start);
+                        //TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_Start);
+                    //else
+                        //tagInfo = TagInfo_currentLine;
+                        //TagInfo_currentLine = TagInfo_currentLine.substr(0);
                     //if nestedTag_no = 0
-                            //text.push_back(TagInfo_currentLine)
+                            //text.push_back(TagInfo)
                     //else
                         //tags.size - nestedTag_no = no
-                        //text[no] = TagInfo_currentLine
+                        //text[no] = TagInfo
+                    //tagInText = false
+                    //option = assign
 
-                        
                 //case : assign
                     //if (TagInfo_currentLine.length() == 0)
                         //continue;
@@ -97,8 +104,13 @@
 
                     //if there is a tag in the current line
                     //if (TagPos_Start != std::string::npos) {
-                        //option:tag
+                        //if (TagPos_Start == 1)
+                            //option:tag
+                        //else
+                            //tagInText = true;
+                            //option text
                     //else
+                        //tagInText = true;
                         //option text
                     std::size_t find_ClosingTag = tag.find("/");        //check if the tag is an closing tag
 
