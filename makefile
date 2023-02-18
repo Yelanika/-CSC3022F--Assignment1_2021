@@ -7,7 +7,7 @@ tagDriver.exe: tagDriver.o tag.o
 tagDriver.o: tagDriver.cpp tag.cpp
 	$(CC) $(CCFLAGS) -c tagDriver.cpp -o tagDriver.o
 
-tag.o: tag.cpp tag.h
+tag.o: tag.cpp
 	$(CC) $(CCFLAGS) -c tag.cpp -o tag.o
 
 clean:

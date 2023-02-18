@@ -15,12 +15,12 @@
 #include <cctype>
 #include <algorithm>
 
-namespace GNSSEN002 {
+//namespace GNSSEN002 {
     /***
      * * ExtractTagsandText() - * 
      * 
      * **/
-    void ExtractTagsandText(std::vector<std::string> tagInfo) {
+    void GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
         
         std::vector<std::string> tags;
         std::vector<std::string> text; 
@@ -121,7 +121,7 @@ namespace GNSSEN002 {
      * printTag() -  printing only the tags
      * [option p]
      * **/
-    void printTag() {
+    void GNSSEN002::printTag() {
 
         for (int j = 0; j < Tag.size(); ++j) {
             std::cout << Tag[j].tagName << std::endl;
@@ -132,13 +132,13 @@ namespace GNSSEN002 {
      * printTagInfo() - printing tag data for given tag
      * [option l]
      * **/
-    void printTagInfo(std::string inputTagName) {
+    void GNSSEN002::printTagInfo(std::string inputTagName) {
         
         //Looping through the stored tags searching for the tag input 
         for (int j = 0; j < Tag.size(); ++j) {
             if (Tag[j].tagName == inputTagName) {
-                std::cout << "No. of Tag Pairs: " << GNSSEN002::Tag[j].noTagPairs << std::endl;
-                std::cout << "Tag Text: " << GNSSEN002::Tag[j].tagText << std::endl;
+                std::cout << "No. of Tag Pairs: " << Tag[j].noTagPairs << std::endl;
+                std::cout << "Tag Text: " << Tag[j].tagText << std::endl;
             }
         }
 
@@ -157,4 +157,4 @@ namespace GNSSEN002 {
         // }
     }
     
-}   
+//}   

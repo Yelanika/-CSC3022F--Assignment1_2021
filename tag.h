@@ -7,8 +7,8 @@
  * 
  * ***/
 
-#ifndef tag_h
-#define tag_h
+#ifndef _TAG_H
+#define _TAG_H
 
 #include <string>
 #include <vector>
@@ -21,7 +21,7 @@ namespace GNSSEN002 {
         std::string tagText;
     };
 
-    std::vector<TagStruct> Tag;
+    inline std::vector<TagStruct> Tag;
     void ExtractTagsandText(std::vector<std::string> tagInfo);
     void printTag();
     void printTagInfo(std::string inputTagName);    
