@@ -26,11 +26,11 @@
         std::vector<std::string> tags;
         std::vector<std::string> text; 
 
-        for (int i = 0; i < tagInfo.size(); ++i) {      //going through each line of the textfile
+        for (int lineNo = 0; lineNo < tagInfo.size(); ++lineNo) {      //going through each line of the textfile
 
-            std::string TagInfo_currentLine = tagInfo[i];      
+            std::string TagInfo_currentLine = tagInfo[lineNo];      
 
-            bool found_endTag = false; //to check if the end tag is found first
+            bool found_ClosingTag = false; //to check if the end tag is found first
 
             //variables to help identify if the line has any values or is empty 
             //std::string copy_TagInfo_currentLine = TagInfo_currentLine;       
@@ -51,33 +51,81 @@
                 //ends this iteration and goes to the next iteration
                 continue;
             else {              //else capture the data in the line
-
-                //Getting the tag
-                std::size_t StartTagPos = TagInfo_currentLine.find("<");
+                
+                //Checking for the beginning of a tag
+                std::size_t TagPos_Start = TagInfo_currentLine.find("<");
 
                 //if there is a tag in the current line
-                if (StartTagPos!=std::string::npos) {
-                    std::size_t EndtagPos = TagInfo_currentLine.find(">");   //finding the end of the tag 
-                    std::string tag = TagInfo_currentLine.substr(StartTagPos,EndtagPos-StartTagPos+1);  //dont understand this????
+                if (TagPos_Start != std::string::npos) {
+                    //option:tag
+                //else
+                    //option text
+                //for loop going through each line
+                //nestedTag_no                
+                //for(;;)
+                //switch(option)
+                //case : tag
+                    std::size_t TagPos_End = TagInfo_currentLine.find(">");   //finding the end of the tag 
+                    std::string tag = TagInfo_currentLine.substr(TagPos_Start,TagPos_End-TagPos_Start+1); 
+                    //std::size_t find_ClosingTag = tag.find("/");
+                    //if (find_ClosingTag != std::string::npos)
+                        //nestedTag_no--;
+                        
+                    //Tag.push_back({tags[i], 1, text[i]});
+                    //else //opening tag
+                        //tags.push_back(tag);
+                        //nestedTag_no++;
+                    //TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_End+1); 
+                    //option = assign
+                    
+                //case : text
+                    //
+                    //if nestedTag_no = 0
+                            //text.push_back(TagInfo_currentLine)
+                    //else
+                        //tags.size - nestedTag_no = no
+                        //text[no] = TagInfo_currentLine
 
-                    std::size_t EndTagPos = tag.find("/");
+                        
+                //case : assign
+                    //if (TagInfo_currentLine.length() == 0)
+                        //continue;
+                        //break;
+                    //else
+                    //Checking for the beginning of a tag
+                    //std::size_t TagPos_Start = TagInfo_currentLine.find("<");
 
-                    if (EndTagPos!=std::string::npos)  //if an endtag is found
-                        found_endTag = true;
-                    else {
+                    //if there is a tag in the current line
+                    //if (TagPos_Start != std::string::npos) {
+                        //option:tag
+                    //else
+                        //option text
+                    std::size_t find_ClosingTag = tag.find("/");        //check if the tag is an closing tag
+
+                    if (find_ClosingTag != std::string::npos)  //if an closing tag is found
+                        found_ClosingTag = true;
+                        //option closingTag
+                //case : closingTag
+                    else {      //else it would be an opening tag
                         tags.push_back(tag);
 
                         //current line without the tag
-                        TagInfo_currentLine = TagInfo_currentLine.substr(EndtagPos+1);
-
+                        TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_End+1);
+                        std::cout << "line " << lineNo << "  tag: " << tag << "  current line: " << TagInfo_currentLine << std::endl;
                         //Check for text once the tag is removed 
                         if (TagInfo_currentLine.length() == 0)
-                            found_endTag = true;
+                            continue;
+                            //found_ClosingTag = true; 
                     }                    
                 }
 
+                //if there is no tag - it would be text
+                //else
+                //you would store text until the next < or until TagInfo_currentLine.length() == 0
+
+
                 //if the end tag is found first - then skip this section of pushing back text
-                if (found_endTag == false) {    
+                if (found_ClosingTag == false) {    
                     //Getting the text - looking for end tag
                     std::size_t StextPos = TagInfo_currentLine.find("<");
 
@@ -92,36 +140,36 @@
                 }
             }        
         }        
-        Tag.push_back({tags[0], 1, text[0]});
+        // Tag.push_back({tags[0], 1, text[0]});
 
-        if (tags.size() > 1) {
-            for (int i = 1; i < tags.size(); ++i) {
+        // if (tags.size() > 1) {
+        //     for (int i = 1; i < tags.size(); ++i) {     //need to change i to different variable name
                 
-                bool found = false;
-                int k_tag;
+        //         bool found = false;
+        //         int k_tag;
 
-                //search for the same tag
-                for (k_tag = 1; k_tag < i+1; ++k_tag) { //k_tag = position of the tag in vector
+        //         //search for the same tag
+        //         for (k_tag = 1; k_tag < i+1; ++k_tag) { //k_tag = position of the tag in vector
 
-                    //condition: to not check same tag against each other
-                    if ((k_tag-1) != i) {
-                        if (tags[i] == tags[k_tag-1]) {
-                            found = true;
-                            break;      //break out of loop
-                        }
-                    }
-                }
+        //             //condition: to not check same tag against each other
+        //             if ((k_tag-1) != i) {
+        //                 if (tags[i] == tags[k_tag-1]) {
+        //                     found = true;
+        //                     break;      //break out of loop
+        //                 }
+        //             }
+        //         }
                 
-                if (found)  {       //if found is true
-                    Tag[k_tag-1].noTagPairs++;
-                    Tag[k_tag-1].tagText += " : " + text[i];
-                }
-                else                //if a new tag name is found
-                    Tag.push_back({tags[i], 1, text[i]});  
+        //         if (found)  {       //if found is true
+        //             Tag[k_tag-1].noTagPairs++;
+        //             Tag[k_tag-1].tagText += " : " + text[i];
+        //         }
+        //         else                //if a new tag name is found
+        //             Tag.push_back({tags[i], 1, text[i]});  
 
-            }
+        //     }
 
-        }
+        // }
         
     }
 
