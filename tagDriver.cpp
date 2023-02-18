@@ -30,12 +30,13 @@ int main (int argc, char* argv[]) {
                     std::cout << "r: Read and process tag file" << std::endl;
                     std::cout << "p: Print all tags" << std::endl;
                     std::cout << "d: Write tags and data to a file called tag.txt" << std::endl;
-                    std::cout << "l: Print tag for given tag" << std::endl;
+                    std::cout << "l: Print tag data for given tag" << std::endl;
                     std::cout << "q: Quit" << std::endl;
 
+                    std::cout << "choose: ";
                     std::cin >> option;     //User input of option
 
-                    std::cout << "choose: " << option << std::endl;
+                    // << option << std::endl;
                     break;
                 }
                 case 'r' : {            //Getting input file 

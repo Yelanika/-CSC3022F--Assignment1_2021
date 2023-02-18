@@ -17,7 +17,8 @@
 
 //namespace GNSSEN002 {
     /***
-     * * ExtractTagsandText() - * 
+     * * ExtractTagsandText():
+     *      ` 
      * 
      * **/
     void GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
