@@ -26,32 +26,39 @@
         std::vector<std::string> tags;
         std::vector<std::string> text; 
 
-        for (int i = 0; i < tagInfo.size(); ++i) {
+        for (int i = 0; i < tagInfo.size(); ++i) {      //going through each line of the textfile
 
-            std::string temp = tagInfo[i];
+            std::string TagInfo_currentLine = tagInfo[i];      
 
             bool found_endTag = false; //to check if the end tag is found first
 
             //variables to help identify if the line has any values or is empty 
-            std::string temp2 = temp;
-            int spaces_temp2 = 0;
-            for (int j = 0; j < temp2.length(); ++j) {
-                if (temp2.at(j) == ' ')
-                    spaces_temp2++;
-            }       
+            //std::string copy_TagInfo_currentLine = TagInfo_currentLine;       
+            //int spaces = 0;
 
+            //if empty line - space would be 0
+            //thus, would not go through this loop
+            //tabbed space counts as text not as a space, thus spaces = 0
+            // for (int j = 0; j < copy_TagInfo_currentLine.length(); ++j) {
+            //     if (copy_TagInfo_currentLine.at(j) == ' ')
+            //         spaces++;
+
+            //     //what happens when spaces end and somnething is found???
+            // }       
+            //std::cout << "current line " << copy_TagInfo_currentLine.length() << "      " << "spaces " << spaces << std::endl;
             //if the no. of spaces in the line = length of the line-1, then iterate again and go to next line
-            if (spaces_temp2 == (temp2.length()-1))
+            if ((TagInfo_currentLine.length()) == 0)       //line is empty
+                //ends this iteration and goes to the next iteration
                 continue;
             else {              //else capture the data in the line
 
                 //Getting the tag
-                std::size_t StagPos = temp.find("<");
+                std::size_t StartTagPos = TagInfo_currentLine.find("<");
 
                 //if there is a tag in the current line
-                if (StagPos!=std::string::npos) {
-                    std::size_t EtagPos = temp.find(">");   //finding the end of the tag 
-                    std::string tag = temp.substr(StagPos,EtagPos-StagPos+1);
+                if (StartTagPos!=std::string::npos) {
+                    std::size_t EndtagPos = TagInfo_currentLine.find(">");   //finding the end of the tag 
+                    std::string tag = TagInfo_currentLine.substr(StartTagPos,EndtagPos-StartTagPos+1);  //dont understand this????
 
                     std::size_t EndTagPos = tag.find("/");
 
@@ -61,10 +68,10 @@
                         tags.push_back(tag);
 
                         //current line without the tag
-                        temp = temp.substr(EtagPos+1);
+                        TagInfo_currentLine = TagInfo_currentLine.substr(EndtagPos+1);
 
                         //Check for text once the tag is removed 
-                        if (temp.length() == 0)
+                        if (TagInfo_currentLine.length() == 0)
                             found_endTag = true;
                     }                    
                 }
@@ -72,16 +79,16 @@
                 //if the end tag is found first - then skip this section of pushing back text
                 if (found_endTag == false) {    
                     //Getting the text - looking for end tag
-                    std::size_t StextPos = temp.find("<");
+                    std::size_t StextPos = TagInfo_currentLine.find("<");
 
                     //if end tag is found & we are getting the text
                     if (StextPos!=std::string::npos) {
-                        std::size_t EtextPos = temp.find(">");
-                        std::string tText = temp.substr(0,StextPos);
+                        std::size_t EtextPos = TagInfo_currentLine.find(">");
+                        std::string tText = TagInfo_currentLine.substr(0,StextPos);
                         text.push_back(tText);
                     }
                     else    //else there must only be string left in the current line 
-                        text.push_back(temp);
+                        text.push_back(TagInfo_currentLine);
                 }
             }        
         }        
@@ -135,16 +142,21 @@
      * **/
     void GNSSEN002::printTagInfo(std::string inputTagName) {
         
+        bool found = false;
         //Looping through the stored tags searching for the tag input 
         for (int j = 0; j < Tag.size(); ++j) {
             if (Tag[j].tagName == inputTagName) {
                 std::cout << "No. of Tag Pairs: " << Tag[j].noTagPairs << std::endl;
                 std::cout << "Tag Text: " << Tag[j].tagText << std::endl;
+                found = true;
             }
+            if (found == true)
+                break;
         }
 
         //if the tag input could not be found
-        std::cout << "The tag '" << inputTagName << "' could not be found." << std::endl;
+        if (found == false)
+            std::cout << "The tag '" << inputTagName << "' could not be found." << std::endl;
     }
 
     /**** 
