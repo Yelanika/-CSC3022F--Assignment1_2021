@@ -25,6 +25,7 @@
         
         std::vector<std::string> tags;
         std::vector<std::string> text; 
+        int no_nestedTag = 0; 
 
         //int tags_size = tags.size();
         //int texts_size = text.size();
@@ -41,10 +42,12 @@
 
         for (int lineNo = 0; lineNo < tagInfo.size(); ++lineNo) {      //going through each line of the textfile
 
-            std::string TagInfo_currentLine = tagInfo[lineNo];      
+            std::string TagInfo_currentLine = tagInfo[lineNo];    
+             
             
             //Testing
-            
+            //if (lineNo == 6)
+              //  break;
             bool found_ClosingTag = false; //to check if the end tag is found first
 
             if ((TagInfo_currentLine.length()) == 0)       //line is empty
@@ -53,7 +56,7 @@
             else {              //else capture the data in the line
 
                 char action = 'b';  //the action that will take place in the below switch statement
-                int no_nestedTag = 0;
+                
                 bool notEmpty = true;
                 bool tagInText = false;
 
@@ -64,8 +67,9 @@
                     switch(action) {
                         case 'a' : {    //option = assign
                             std::cout << lineNo << " Assign: " << TagInfo_currentLine << std::endl;
-                            if ((TagInfo_currentLine.length() == 0) or (lineNo == 6)) {       //if line is empty
+                            if (TagInfo_currentLine.length() == 0)  {       //if line is empty
                                 notEmpty = false;
+                                std::cout << " " <<std::endl;
                                 break;
                                 //continue;
                             }
@@ -105,6 +109,10 @@
                                 std::size_t TagPos_End = TagInfo_currentLine.find(">");   //finding the end of the tag 
                                 std::string tag = TagInfo_currentLine.substr(TagPos_Start,TagPos_End-TagPos_Start+1); 
 
+                                //search for another < in the tag
+                                //start at tag[1]
+                                //for loop through tag.size()
+                                //if < found -> tag[]
                                 std::size_t find_ClosingTag = tag.find("/");    //check if tag is a closing tag
                                 if (find_ClosingTag != std::string::npos)
                                     no_nestedTag--;
@@ -130,13 +138,23 @@
                             else { //no tag in text
                                 tagInfo = TagInfo_currentLine;
                                 //std::cout << "Error 1" << std::endl;
-                                TagInfo_currentLine = TagInfo_currentLine.substr(0);
-                                //std::cout << "Error 2" << std::endl;
+                                TagInfo_currentLine = TagInfo_currentLine.substr(tagInfo.size());
+                                std::cout << "Error 2" << std::endl;
                             }
 
                             std::cout << lineNo << " Text: no_nestedTag: " << no_nestedTag << " info: " << TagInfo_currentLine << std::endl;
                             if (no_nestedTag == 1)
                                 text.push_back(tagInfo);
+                            //no_nestedTag to current_nestedTagNo
+                            //prev_no_nestedTag = no_nestedTag; //at the beginneing of lineno loop
+                            //if (no_nestedTag == prev_nestedTagNo)
+                            //text.push_back(tagInfo);
+                            //if (no_nestedTag > 1) {       //nesting of tags is taking place
+                            //if (prev_nestedTagNo > current_nestTagNo)        //tag has been added to nest
+                            //text.push_back(tagInfo)
+                            //else if (prev_nestedTagNo < current_nestTagNo)    //tag has been removed from the nest
+                            //text[tags.size() - 2] = tagInfo      //HOW DO WE FIND THE TEXT_NO -> test[text_no]?????
+                            //}
                             else {
                                 std::cout << "Error 3" << std::endl;
                                 text[tags.size() - no_nestedTag - 1] = tagInfo;
