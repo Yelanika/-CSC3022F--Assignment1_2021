@@ -26,6 +26,19 @@
         std::vector<std::string> tags;
         std::vector<std::string> text; 
 
+        //int tags_size = tags.size();
+        //int texts_size = text.size();
+        //if (tags_size == texts_size) {
+
+            //int counter = 0;
+            //while ((tags_size != 0) and (texts_size != 0)) {
+                
+
+            //}
+        //}
+        //else 
+        //std::cout << "Error: The no. of tags and assciated texts are unequal" << std::endl;
+
         for (int lineNo = 0; lineNo < tagInfo.size(); ++lineNo) {      //going through each line of the textfile
 
             std::string TagInfo_currentLine = tagInfo[lineNo];      
@@ -48,7 +61,7 @@
                 while(notEmpty) {
                     switch(action) {
                         case 'a' : {    //option = assign
-
+                            std::cout << lineNo << " Assign: " << TagInfo_currentLine << std::endl;
                             if (TagInfo_currentLine.length() == 0) {       //if line is empty
                                 notEmpty = false;
                                 break;
@@ -78,7 +91,7 @@
                             break;
                         }
                         case 'b' : {    //option = tag
-
+                            std::cout << lineNo << " Tag: " << TagInfo_currentLine << std::endl;
                             //Checking for the beginning of a tag
                             std::size_t TagPos_Start = TagInfo_currentLine.find("<");
 
@@ -103,7 +116,7 @@
                             break;
                         }
                         case 'c' : {    //option = text
-
+                            std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
                             std::string tagInfo = " ";
 
                             if (tagInText = true) {     //there is a tag after the text
@@ -125,9 +138,6 @@
                             action = 'a';   //option = assign
                             break;
                         }
-                        // case 'd' : {    //nothing left in the line
-                        //     break;
-                        // }
                         default:
                             break;
                     }
@@ -135,46 +145,7 @@
             }
         }
     }
-                //     std::size_t find_ClosingTag = tag.find("/");        //check if the tag is an closing tag
-
-                //     if (find_ClosingTag != std::string::npos)  //if an closing tag is found
-                //         found_ClosingTag = true;
-                //         //option closingTag
-                // //case : closingTag
-                //     else {      //else it would be an opening tag
-                //         tags.push_back(tag);
-
-                //         //current line without the tag
-                //         TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_End+1);
-                //         std::cout << "line " << lineNo << "  tag: " << tag << "  current line: " << TagInfo_currentLine << std::endl;
-                //         //Check for text once the tag is removed 
-                //         if (TagInfo_currentLine.length() == 0)
-                //             continue;
-                //             //found_ClosingTag = true; 
-                //     }                    
-                // }
-
-                //if there is no tag - it would be text
-                //else
-                //you would store text until the next < or until TagInfo_currentLine.length() == 0
-
-
-                //if the end tag is found first - then skip this section of pushing back text
-                // if (found_ClosingTag == false) {    
-                //     //Getting the text - looking for end tag
-                //     std::size_t StextPos = TagInfo_currentLine.find("<");
-
-                //     //if end tag is found & we are getting the text
-                //     if (StextPos!=std::string::npos) {
-                //         std::size_t EtextPos = TagInfo_currentLine.find(">");
-                //         std::string tText = TagInfo_currentLine.substr(0,StextPos);
-                //         text.push_back(tText);
-                //     }
-                //     else    //else there must only be string left in the current line 
-                //         text.push_back(TagInfo_currentLine);
-                // }
-           // }        
-       // }        
+        
         // Tag.push_back({tags[0], 1, text[0]});
 
         // if (tags.size() > 1) {
