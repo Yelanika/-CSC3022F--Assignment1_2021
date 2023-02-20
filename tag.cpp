@@ -49,13 +49,15 @@
             //if (lineNo == 6)
               //  break;
             bool found_ClosingTag = false; //to check if the end tag is found first
+            //std::string tag = " ";
+            std::size_t TagPos_Start = -1;
 
             if ((TagInfo_currentLine.length()) == 0)       //line is empty
                 //ends this iteration and goes to the next iteration
                 continue;
             else {              //else capture the data in the line
 
-                char action = 'b';  //the action that will take place in the below switch statement
+                char action = 'a';  //the action that will take place in the below switch statement
                 
                 bool notEmpty = true;
                 bool tagInText = false;
@@ -74,12 +76,54 @@
                                 //continue;
                             }
                             else {
+                                std::size_t prev_TagPos_Start = TagPos_Start;
+                                std::string copy_TagInfo_currentLine = TagInfo_currentLine;       //copy_TagInfo_currentline is just for comparsion
+                                bool found = true;
+
                                 //Checking for the beginning of a tag
-                                std::size_t TagPos_Start = TagInfo_currentLine.find("<");
-                            
+                                while(found) {        //looking for <
+                                    TagPos_Start = copy_TagInfo_currentLine.find("<");
+
+                                    //if (TagPos_Start != std::string::npos) //can find < 
+                                            //copy_TagInfo_currentLine = copy_TagInfo_currentLine.substr(TagPos_Start+1);
+                                            //std::size_t TagPos_End = copy_TagInfo_currentLine.find(">");
+                                            //if (TagPos_End != std::string::npos)      //if end tag exists
+                                                //if (TagPos_End < TagPos_Start)    //end tag if before the open tag
+                                                //TagPos_Start = prev_TagPos_Start;
+                                                //break;
+                                            //else
+                                                //prev_TagPos_Start = TagPos_Start;
+                                    //else      //no tag in the line or left in the line
+                                            //if (prev_TagPos_Start != std::string::npos)
+                                                //TagPos_Start = prev_TagPos_Start;
+                                                //found = false
+                                }
+                                //while(true)   //put this is case b
+                                //get a tag, look for < sign inside it
+                                //if found
+                                    //new tag with inner < starting the tag
+                                    //take what is left of that tag and add it to the text 
+                                //else  
+                                    //exception_OpenTag = true;
+                                    //std::size_t exception_PosOpenTag_ = what ever the new tags starting postion is in the currentline thing- declare this outside switch statement
+                                    //tagInText = true;
+                                    //action = 'c';
+                                    //break;
+
+                                //in case c inside tagintext is true you have:
+                                //if exception_OpenTag = true
+                                
+
                                 //if there is a tag in the current line
                                 if (TagPos_Start != std::string::npos) {
+
+                                    
+                                        //TagPos_Start = copy_TagInfo_currentLine.find("<");
+                                        
+                                
+                                
                                     if (TagPos_Start == 0) {    //if tag is in the first position
+                                    //if (counter == 0)
                                         action = 'b';//option:tag
                                         break;
                                     }
@@ -106,13 +150,11 @@
                             //     action = 'b';//option:tag
                             // else
                             //     action = 'c';//option text
+                                //comment following two lines
                                 std::size_t TagPos_End = TagInfo_currentLine.find(">");   //finding the end of the tag 
                                 std::string tag = TagInfo_currentLine.substr(TagPos_Start,TagPos_End-TagPos_Start+1); 
 
-                                //search for another < in the tag
-                                //start at tag[1]
-                                //for loop through tag.size()
-                                //if < found -> tag[]
+                                //put code here
                                 std::size_t find_ClosingTag = tag.find("/");    //check if tag is a closing tag
                                 if (find_ClosingTag != std::string::npos)
                                     no_nestedTag--;
@@ -131,7 +173,7 @@
                             std::string tagInfo = " ";
 
                             if (tagInText == true) {     //there is a tag after the text
-                                std::size_t TagPos_Start = TagInfo_currentLine.find("<");
+                                std::size_t TagPos_Start = TagInfo_currentLine.find("<");       //comment out
                                 tagInfo = TagInfo_currentLine.substr(0,TagPos_Start);
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_Start);
                             }
