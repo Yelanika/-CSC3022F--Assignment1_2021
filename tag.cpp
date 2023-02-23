@@ -199,9 +199,9 @@
 
                             if (tagInText == true) {     //there is a tag after the text
                                 //std::size_t TagPos_Start = TagInfo_currentLine.find("<");       //comment out
-                                std::cout << lineNo << " Text: inside loop" << std::endl;
+                               // std::cout << lineNo << " Text: inside loop" << std::endl;
                                 tagInfo = TagInfo_currentLine.substr(0,TagPos_Start);
-                                std::cout << lineNo << " Text: " << tagInfo << std::endl;
+                               // std::cout << lineNo << " Text: " << tagInfo << std::endl;
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_Start);
                                 std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
                             }
@@ -209,10 +209,20 @@
                                 tagInfo = TagInfo_currentLine;
                                 //std::cout << "Error 1" << std::endl;
                                 TagInfo_currentLine = TagInfo_currentLine.substr(tagInfo.size());
-                                std::cout << "Error 2" << std::endl;
+                               // std::cout << "Error 2" << std::endl;
                             }
 
-                            std::cout << lineNo << " Text: no_nestedTag: " << no_nestedTag << " info: " << TagInfo_currentLine << std::endl;
+                            //check for tab spaces
+                            bool tabFound = true;
+                            
+
+                            while (tabFound) {
+                                if (tagInfo[0] == '\t') 
+                                    tagInfo = tagInfo.substr(1, tagInfo.size());
+                                else
+                                    tabFound = false;
+                            }
+                           // std::cout << lineNo << " Text: no_nestedTag: " << no_nestedTag << " info: " << TagInfo_currentLine << std::endl;
                             if (no_nestedTag == 1)
                                 text.push_back(tagInfo);
                             //no_nestedTag to current_nestedTagNo
@@ -226,11 +236,11 @@
                             //text[tags.size() - 2] = tagInfo      //HOW DO WE FIND THE TEXT_NO -> test[text_no]?????
                             //}
                             else {
-                                std::cout << "Error 3" << std::endl;
-                                text[tags.size() - no_nestedTag - 1] = tagInfo;
-                                std::cout << "Error 4" << std::endl;
+                               // std::cout << "Error 3" << std::endl;
+                                text[tags.size() - no_nestedTag - 1] += tagInfo;
+                               // std::cout << "Error 4" << std::endl;
                             }
-                    
+                            std::cout << lineNo << " Text: " << tagInfo << std::endl;
                             tagInText = false;
                             action = 'a';   //option = assign
                             break;
