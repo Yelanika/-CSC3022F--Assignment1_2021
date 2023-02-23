@@ -264,11 +264,30 @@
                 }
             }
         }
+        std::vector <std::string> join_text;
+        std::vector<std::string> tag_struct;
 
         if (tags.size() == text.size()) {
             for (int i = 0; i < tags.size(); ++i) {
                 std::cout << "Tag: " << tags[i] << " Text: " << text[i] << std::endl;
+
             }
+            int counter = 0;
+
+            while (counter < tags.size()) {
+                tag_struct.push_back(tags[counter]);
+                join_text.push_back(text[counter]);
+                for (int i = 1; i < tags.size(); ++i) {
+                    if (tags[counter] == tags[i]) {
+                        tags[i] += "_USED";
+                        join_text[i] += " : " + text[i];
+
+                    
+                    }
+
+                }
+            }
+            
         }
         else 
             std::cout << "Error: tags and text size doens't match" << std::endl;
