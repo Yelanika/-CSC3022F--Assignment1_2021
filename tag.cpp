@@ -52,6 +52,9 @@
             //std::string tag = " ";
             std::size_t TagPos_Start = -1;
 
+            int tagCounter = 0;
+            bool sameLine = false;
+
             if ((TagInfo_currentLine.length()) == 0)       //line is empty
                 //ends this iteration and goes to the next iteration
                 continue;
@@ -181,10 +184,13 @@
 
                                 //if onlytage left in the current line
                                 std::size_t find_ClosingTag = tag.find("/");    //check if tag is a closing tag
-                                if (find_ClosingTag != std::string::npos)
+                                if (find_ClosingTag != std::string::npos) {
                                     no_nestedTag--;
+                                    sameLine = false;
+                                }
                                 else {            //opening tag
                                     tags.push_back(tag);
+                                    tagCounter++;
                                     no_nestedTag++;
                                 }
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_End+1); 
@@ -223,8 +229,13 @@
                                     tabFound = false;
                             }
                            // std::cout << lineNo << " Text: no_nestedTag: " << no_nestedTag << " info: " << TagInfo_currentLine << std::endl;
-                            if (no_nestedTag == 1)
+                            if ((no_nestedTag == 1) and (sameLine == false))  {
                                 text.push_back(tagInfo);
+                                sameLine = true;
+                            }
+                            else if ((no_nestedTag == 1) and (sameLine == true)) {
+                                text[tagCounter - 1] += tagInfo;
+                            }
                             //no_nestedTag to current_nestedTagNo
                             //prev_no_nestedTag = no_nestedTag; //at the beginneing of lineno loop
                             //if (no_nestedTag == prev_nestedTagNo)
@@ -237,7 +248,7 @@
                             //}
                             else {
                                // std::cout << "Error 3" << std::endl;
-                                text[tags.size() - no_nestedTag - 1] += tagInfo;
+                                text[tagCounter - no_nestedTag - 1] += tagInfo;
                                // std::cout << "Error 4" << std::endl;
                             }
                             std::cout << lineNo << " Text: " << tagInfo << std::endl;
@@ -251,6 +262,15 @@
                 }
             }
         }
+
+        if (tags.size() == text.size()) {
+            for (int i = 0; i < tags.size(); ++i) {
+                std::cout << "Tag: " << tags[i] << " Text: " << text[i] << std::endl;
+            }
+        }
+        else 
+            std::cout << "Error: tags and text size doens't match" << std::endl;
+
     }
         
         // Tag.push_back({tags[0], 1, text[0]});
