@@ -26,7 +26,9 @@
         std::vector<std::string> tags;
         std::vector<std::string> text; 
         int no_nestedTag = 0; 
-
+        int tagCounter = 0;
+        bool sameLine = false;
+        int max_no_nestedTag = 0;
         //int tags_size = tags.size();
         //int texts_size = text.size();
         //if (tags_size == texts_size) {
@@ -52,8 +54,8 @@
             //std::string tag = " ";
             std::size_t TagPos_Start = -1;
 
-            int tagCounter = 0;
-            bool sameLine = false;
+            
+            
 
             if ((TagInfo_currentLine.length()) == 0)       //line is empty
                 //ends this iteration and goes to the next iteration
@@ -75,6 +77,8 @@
                             if (TagInfo_currentLine.length() == 0)  {       //if line is empty
                                 notEmpty = false;
                                 std::cout << " " <<std::endl;
+                                // std::cout << tags[tagCounter-1] << " " << text[tagCounter-1] << std::endl;
+                                // std::cout << " " <<std::endl;
                                 break;
                                 //continue;
                             }
@@ -185,8 +189,16 @@
                                 //if onlytage left in the current line
                                 std::size_t find_ClosingTag = tag.find("/");    //check if tag is a closing tag
                                 if (find_ClosingTag != std::string::npos) {
+                                    // if (no_nestedTag > 1) {
+                                    //     if (max_no_nestedTag < no_nestedTag)
+                                    //         max_no_nestedTag = no_nestedTag;
+                                    // }
                                     no_nestedTag--;
                                     sameLine = false;
+                                    // if (no_nestedTag == 0) 
+                                    //     max_no_nestedTag = 0;
+                                   
+                                    
                                 }
                                 else {            //opening tag
                                     tags.push_back(tag);
@@ -194,7 +206,7 @@
                                     no_nestedTag++;
                                 }
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_End+1); 
-                                std::cout << lineNo << " Tag: no_nestedTag: " << no_nestedTag << std::endl;
+                                std::cout << lineNo << " Tag: no_nestedTag: " << no_nestedTag << " tag counter: " << tagCounter<< std::endl;
                             }
                             action = 'a';    //option = assign
                             break;
@@ -228,27 +240,17 @@
                                 else
                                     tabFound = false;
                             }
-                           // std::cout << lineNo << " Text: no_nestedTag: " << no_nestedTag << " info: " << TagInfo_currentLine << std::endl;
+
                             if ((no_nestedTag == 1) and (sameLine == false))  {
                                 text.push_back(tagInfo);
                                 sameLine = true;
                             }
                             else if ((no_nestedTag == 1) and (sameLine == true)) {
-                                text[tagCounter - 1] += tagInfo;
+                                text[tagCounter - 1] += " " + tagInfo;
                             }
-                            //no_nestedTag to current_nestedTagNo
-                            //prev_no_nestedTag = no_nestedTag; //at the beginneing of lineno loop
-                            //if (no_nestedTag == prev_nestedTagNo)
-                            //text.push_back(tagInfo);
-                            //if (no_nestedTag > 1) {       //nesting of tags is taking place
-                            //if (prev_nestedTagNo > current_nestTagNo)        //tag has been added to nest
-                            //text.push_back(tagInfo)
-                            //else if (prev_nestedTagNo < current_nestTagNo)    //tag has been removed from the nest
-                            //text[tags.size() - 2] = tagInfo      //HOW DO WE FIND THE TEXT_NO -> test[text_no]?????
-                            //}
                             else {
                                // std::cout << "Error 3" << std::endl;
-                                text[tagCounter - no_nestedTag - 1] += tagInfo;
+                                text[tagCounter - no_nestedTag] += tagInfo;
                                // std::cout << "Error 4" << std::endl;
                             }
                             std::cout << lineNo << " Text: " << tagInfo << std::endl;
