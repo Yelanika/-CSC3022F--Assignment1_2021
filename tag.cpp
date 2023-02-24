@@ -89,37 +89,7 @@
 
                                 // //Checking for the beginning of a tag
                                 // while(found) {        //looking for <
-                                TagPos_Start = TagInfo_currentLine.find("<");
-
-                                    //if (TagPos_Start != std::string::npos) //can find < 
-                                            //copy_TagInfo_currentLine = copy_TagInfo_currentLine.substr(TagPos_Start+1);
-                                            //std::size_t TagPos_End = copy_TagInfo_currentLine.find(">");
-                                            //if (TagPos_End != std::string::npos)      //if end tag exists
-                                                //if (TagPos_End < TagPos_Start)    //end tag if before the open tag
-                                                //TagPos_Start = prev_TagPos_Start;
-                                                //break;
-                                            //else
-                                                //prev_TagPos_Start = TagPos_Start;
-                                    //else      //no tag in the line or left in the line
-                                            //if (prev_TagPos_Start != std::string::npos)
-                                                //TagPos_Start = prev_TagPos_Start;
-                                                //found = false
-                                
-                                //while(true)   //put this is case b
-                                //get a tag, look for < sign inside it
-                                //if found
-                                    //new tag with inner < starting the tag
-                                    //take what is left of that tag and add it to the text 
-                                //else  
-                                    //exception_OpenTag = true;
-                                    //std::size_t exception_PosOpenTag_ = what ever the new tags starting postion is in the currentline thing- declare this outside switch statement
-                                    //tagInText = true;
-                                    //action = 'c';
-                                    //break;
-
-                                //in case c inside tagintext is true you have:
-                                //if exception_OpenTag = true
-                                
+                                TagPos_Start = TagInfo_currentLine.find("<");                                
 
                                 //if there is a tag in the current line
                                 if (TagPos_Start != std::string::npos) {
@@ -159,6 +129,9 @@
                             //     action = 'c';//option text
                                 //comment following two lines
                                 std::size_t TagPos_End = TagInfo_currentLine.find(">");   //finding the end of the tag 
+                                //if (TagPos_End != std::string::npos)
+                                    //action =  'c';
+                                    //breakk;????
                                 std::string tag = TagInfo_currentLine.substr(TagPos_Start,TagPos_End-TagPos_Start+1); 
 
                                 //put code here
@@ -201,19 +174,37 @@
                                     
                                 }
                                 else {            //opening tag
+                                    //for (int check_SameTag = 0; check_SameTag < tags.size(); ++check_SameTag) {
+                                        //if (tag == tags[check_SameTag]) {
+                                            //tagIndex = check_SameTag;
+                                        //}
+                                        //else{
+                                            //tags.push_back(tag);
+                                            //tagIndex = - 1;
+                                        //}
+                                        
+                                    //}
                                     tags.push_back(tag);
                                     tagCounter++;
                                     no_nestedTag++;
                                 }
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_End+1); 
                                 std::cout << lineNo << " Tag: no_nestedTag: " << no_nestedTag << " tag counter: " << tagCounter<< std::endl;
+                                //if (tagIndex == -1)
+                                    //action = 'c';
+                                    //break;
                             }
                             action = 'a';    //option = assign
                             break;
                         }
                         case 'c' : {    //option = text
                             std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
-                            std::string tagInfo = " ";
+                            std::string tagInfo = "";
+
+                            //if (TagInfo_currentLine == "")
+                                //text.pushback("");
+                                //action = 'a';
+                                //break;
 
                             if (tagInText == true) {     //there is a tag after the text
                                 //std::size_t TagPos_Start = TagInfo_currentLine.find("<");       //comment out
@@ -241,16 +232,26 @@
                                     tabFound = false;
                             }
 
+
+                            //comment out
                             if ((no_nestedTag == 1) and (sameLine == false))  {
                                 text.push_back(tagInfo);
                                 sameLine = true;
                             }
+                            //if (tagIndex == -1) {
+                            //  text.push(tagInfo) 
+                            //  tagIndex = text.size() -1; ???
+                            //}
+                            //else if ((sameLine == true))
                             else if ((no_nestedTag == 1) and (sameLine == true)) {
                                 text[tagCounter - 1] += " " + tagInfo;
+                                //text[tagIndex] += " " + tagInfo;
                             }
-                            else {
+                            
+                            else {  //text not in the sameLine and there is an tagIndex
                                // std::cout << "Error 3" << std::endl;
                                 text[tagCounter - no_nestedTag] += tagInfo;
+                                //text[tagIndex] += " : " + tagInfo;
                                // std::cout << "Error 4" << std::endl;
                             }
                             std::cout << lineNo << " Text: " << tagInfo << std::endl;
@@ -266,29 +267,42 @@
         }
         std::vector <std::string> join_text;
         std::vector<std::string> tag_struct;
+        std::vector<int> pairs;
 
-        if (tags.size() == text.size()) {
+        if (tags.size() == text.size()) { 
             for (int i = 0; i < tags.size(); ++i) {
                 std::cout << "Tag: " << tags[i] << " Text: " << text[i] << std::endl;
 
             }
-            int counter = 0;
+            //int counter = 0;
 
-            while (counter < tags.size()) {
-                tag_struct.push_back(tags[counter]);
-                join_text.push_back(text[counter]);
-                for (int i = 1; i < tags.size(); ++i) {
-                    if (tags[counter] == tags[i]) {
-                        tags[i] += "_USED";
-                        join_text[i] += " : " + text[i];
-
+                
+            char used = 'U';
+            for (int i = 0; i < tags.size(); ++i) {
                     
+                int counter = i;
+                while (counter < tags.size()) {
+
+                            
+                    if (tags[i] == tags[counter]) {
+
+                        tag_struct.push_back(tags[counter]);
+                        join_text.push_back(text[counter]);
+
+                        tags[i] = used;
+                        text[i] = used;
+                               
                     }
 
+                    counter++;
+
+                        
                 }
+
             }
-            
         }
+            
+        
         else 
             std::cout << "Error: tags and text size doens't match" << std::endl;
 
