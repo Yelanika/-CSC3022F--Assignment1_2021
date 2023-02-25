@@ -29,6 +29,7 @@
         int tagCounter = 0;
         bool sameLine = false;
         int max_no_nestedTag = 0;
+        int tagIndex = -1;
         //int tags_size = tags.size();
         //int texts_size = text.size();
         //if (tags_size == texts_size) {
@@ -83,22 +84,11 @@
                                 //continue;
                             }
                             else {
-                                // std::size_t prev_TagPos_Start = TagPos_Start;
-                                // std::string copy_TagInfo_currentLine = TagInfo_currentLine;       //copy_TagInfo_currentline is just for comparsion
-                                // bool found = true;
-
-                                // //Checking for the beginning of a tag
-                                // while(found) {        //looking for <
                                 TagPos_Start = TagInfo_currentLine.find("<");                                
 
                                 //if there is a tag in the current line
                                 if (TagPos_Start != std::string::npos) {
 
-                                    
-                                        //TagPos_Start = copy_TagInfo_currentLine.find("<");
-                                        
-                                
-                                
                                     if (TagPos_Start == 0) {    //if tag is in the first position
                                     //if (counter == 0)
                                         action = 'b';//option:tag
@@ -124,10 +114,7 @@
 
                             //if there is a tag in the current line
                             if (TagPos_Start != std::string::npos) {
-                            //     action = 'b';//option:tag
-                            // else
-                            //     action = 'c';//option text
-                                //comment following two lines
+            
                                 std::size_t TagPos_End = TagInfo_currentLine.find(">");   //finding the end of the tag 
                                 //if (TagPos_End != std::string::npos)
                                     //action =  'c';
@@ -140,7 +127,6 @@
                                 std::string test_tag = tag.substr(1,tag.size());
 
                                 while (inner_bracket) {
-                                    
 
                                     test_tag_open = test_tag.find("<");
                                     if (test_tag_open != std::string::npos) {
@@ -159,7 +145,7 @@
                                     break;
                                 }
 
-                                //if onlytage left in the current line
+                                //if only tag left in the current line
                                 std::size_t find_ClosingTag = tag.find("/");    //check if tag is a closing tag
                                 if (find_ClosingTag != std::string::npos) {
                                     // if (no_nestedTag > 1) {
@@ -174,22 +160,31 @@
                                     
                                 }
                                 else {            //opening tag
-                                    //for (int check_SameTag = 0; check_SameTag < tags.size(); ++check_SameTag) {
-                                        //if (tag == tags[check_SameTag]) {
-                                            //tagIndex = check_SameTag;
-                                        //}
-                                        //else{
-                                            //tags.push_back(tag);
-                                            //tagIndex = - 1;
-                                        //}
+                                    for (int check_SameTag = 0; check_SameTag < tags.size(); ++check_SameTag) {
+                                        if (tag == tags[check_SameTag]) {
+                                            
+                                            tagIndex = check_SameTag;
+                                            std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << " check_sametag: " << check_SameTag << std::endl;
+                                            break;
+                                        }
+                                        else{
+                                            
+                                            tagIndex = - 1;
+                                            //std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << std::endl;
+                                            //break;
+                                        }
                                         
-                                    //}
-                                    tags.push_back(tag);
+                                    }
+                                    if (tagIndex == -1)
+                                        tags.push_back(tag);
+
+                                    std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << std::endl;
+                                    //tags.push_back(tag);
                                     tagCounter++;
                                     no_nestedTag++;
                                 }
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_End+1); 
-                                std::cout << lineNo << " Tag: no_nestedTag: " << no_nestedTag << " tag counter: " << tagCounter<< std::endl;
+                                //std::cout << lineNo << " Tag: no_nestedTag: " << no_nestedTag << " tag index: " << tagIndex << std::endl;
                                 //if (tagIndex == -1)
                                     //action = 'c';
                                     //break;
@@ -212,7 +207,7 @@
                                 tagInfo = TagInfo_currentLine.substr(0,TagPos_Start);
                                // std::cout << lineNo << " Text: " << tagInfo << std::endl;
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_Start);
-                                std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
+                                //std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
                             }
                             else { //no tag in text
                                 tagInfo = TagInfo_currentLine;
@@ -232,26 +227,27 @@
                                     tabFound = false;
                             }
 
-
+                            std::cout << lineNo << " Text: " << tagInfo << " tag index: " << tagIndex << " sameline: " << sameLine << std::endl;
                             //comment out
-                            if ((no_nestedTag == 1) and (sameLine == false))  {
+                            // if ((no_nestedTag == 1) and (sameLine == false))  {
+                            //     text.push_back(tagInfo);
+                            //     sameLine = true;
+                            // }
+                            if (tagIndex == -1) {
                                 text.push_back(tagInfo);
-                                sameLine = true;
+                                tagIndex = text.size() -1; 
                             }
-                            //if (tagIndex == -1) {
-                            //  text.push(tagInfo) 
-                            //  tagIndex = text.size() -1; ???
-                            //}
-                            //else if ((sameLine == true))
-                            else if ((no_nestedTag == 1) and (sameLine == true)) {
-                                text[tagCounter - 1] += " " + tagInfo;
-                                //text[tagIndex] += " " + tagInfo;
+                            else if ((sameLine == true)) {
+                            // else if ((no_nestedTag == 1) and (sameLine == true)) {
+                                //text[tagCounter - 1] += " " + tagInfo;
+                                text[tagIndex] += " " + tagInfo;
                             }
                             
                             else {  //text not in the sameLine and there is an tagIndex
                                // std::cout << "Error 3" << std::endl;
-                                text[tagCounter - no_nestedTag] += tagInfo;
-                                //text[tagIndex] += " : " + tagInfo;
+                                //text[tagCounter - no_nestedTag] += tagInfo;
+                                text[tagIndex] += " : " + tagInfo;
+                                std::cout << lineNo << " Text: " << text[tagIndex] << std::endl;
                                // std::cout << "Error 4" << std::endl;
                             }
                             std::cout << lineNo << " Text: " << tagInfo << std::endl;
@@ -265,42 +261,43 @@
                 }
             }
         }
-        std::vector <std::string> join_text;
-        std::vector<std::string> tag_struct;
-        std::vector<int> pairs;
+        // std::vector <std::string> join_text;
+        // std::vector<std::string> tag_struct;
+        // std::vector<int> pairs;
 
         if (tags.size() == text.size()) { 
             for (int i = 0; i < tags.size(); ++i) {
                 std::cout << "Tag: " << tags[i] << " Text: " << text[i] << std::endl;
 
             }
-            //int counter = 0;
+        }
+        //     //int counter = 0;
 
                 
-            char used = 'U';
-            for (int i = 0; i < tags.size(); ++i) {
+        //     char used = 'U';
+        //     for (int i = 0; i < tags.size(); ++i) {
                     
-                int counter = i;
-                while (counter < tags.size()) {
+        //         int counter = i;
+        //         while (counter < tags.size()) {
 
                             
-                    if (tags[i] == tags[counter]) {
+        //             if (tags[i] == tags[counter]) {
 
-                        tag_struct.push_back(tags[counter]);
-                        join_text.push_back(text[counter]);
+        //                 tag_struct.push_back(tags[counter]);
+        //                 join_text.push_back(text[counter]);
 
-                        tags[i] = used;
-                        text[i] = used;
+        //                 tags[i] = used;
+        //                 text[i] = used;
                                
-                    }
+        //             }
 
-                    counter++;
+        //             counter++;
 
                         
-                }
+        //         }
 
-            }
-        }
+        //     }
+        // }
             
         
         else 
