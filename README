@@ -7,5 +7,9 @@
  * ***/
 
 - running 'make' will compile the program
-- running './tagDriver.exe' will run the program.
--  
+- running './tagDriver.exe' will run the program and print the menu. The options are:
+    - 'r' will read in a file given filename
+    - 'p' will print all tag names
+    - 'd' will write all tag infomation to a file called tag.txt
+    - 'l' wil print tag infomation for a given tag name.
+    - 'q' will exit the program.
