@@ -20,6 +20,7 @@ int main (int argc, char* argv[]) {
   
     char option = 'm';      // m - Menu
     std::string filename = "";   
+    bool fileExists = false;
 
     if (argc == 1) {        //No parameters should be entered
 
@@ -36,10 +37,21 @@ int main (int argc, char* argv[]) {
                     std::cout << "choose: ";
                     std::cin >> option;     //User input of option
 
+                    if ((option != 'r') or (option != 'p') or (option != 'd') or (option != 'l') or (option != 'q'))
+                        break;
+                    else {
+                        std::cout << "The option you have choosen does not exist, please try again." << std::endl;
+                        option = 'm';
+                    }
+                        
+
                     // << option << std::endl;
                     break;
                 }
                 case 'r' : {            //Getting input file 
+
+                    std::cout << " " << std::endl;
+                    std::cout << "Enter your file name: " << std::endl;
 
                     std::cin >> filename;       //User input of tag file
 
@@ -66,32 +78,68 @@ int main (int argc, char* argv[]) {
                        // std::cout << "Tags and text" << std::endl; //for testing
                         GNSSEN002::ExtractTagsandText(tagInfo);
                         //std::cout << Tag[0].tagName << std::endl;
+                        fileExists = true;
+                        std::cout << "Your file " << filename << " has been loaded successfully." << std::endl;
                     }
                     else    //If there is no infomation in the textfile
                         std::cout << "Error: There is no data in the file provided. " << filename << std::endl;
+
+                    std::cout << " " << std::endl;
                         
                     option = 'm';
                     break;
                 }
                 case 'p' : {        // just printing the tags
+
+                    std::cout << " " << std::endl;
                 
-                    GNSSEN002::printTag();
+                    if (fileExists)
+                        GNSSEN002::printTag();
+                    else  {
+                        std::cout << "File does not exist." << std::endl;
+                        std::cout << "Please use the option 'r' to input a file." << std::endl;
+                    }
                     //std::cout << "just tags" << std::endl;  //testing
+
+                    std::cout << " " << std::endl;
 
                     option = 'm';
                     break;
                 }
                 case 'd' : {        //writing tags and data to file(tag.txt)
 
+                    std::cout << " " << std::endl;
+                    
+                    if (fileExists) {
+                        GNSSEN002::writeTagInfoToFile();
+                        std::cout << "The tag infomation has been successfully written to tag.txt." << std::endl;
+                    }
+                    else  {
+                        std::cout << "File does not exist." << std::endl;
+                        std::cout << "Please use the option 'r' to input a file." << std::endl;
+                    }
+
+                    std::cout << " " << std::endl;
+
                     option = 'm';
                     break;
                 }
                 case 'l' : {        //printing tag data for given tag
+                    std::cout << " " << std::endl;
 
-                    std::string tagInput = "";
-                    std::cin >> tagInput;
-                    GNSSEN002::printTagInfo(tagInput);
+                    if (fileExists) {
+                        std::string tagInput = "";
+                        std::cout << "Please enter a tag name: " << std::endl;
+                        std::cin >> tagInput;
+                        GNSSEN002::printTagInfo(tagInput);
                     //std::cout << "printing tag info" << std::endl;  //testing
+                    }
+                    else  {
+                        std::cout << "File does not exist." << std::endl;
+                        std::cout << "Please use the option 'r' to input a file." << std::endl;
+                    }
+
+                    std::cout << " " << std::endl;
 
                     option = 'm';
                     break;
