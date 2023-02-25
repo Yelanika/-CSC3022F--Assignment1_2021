@@ -30,6 +30,7 @@
         bool sameLine = false;
         int max_no_nestedTag = 0;
         int tagIndex = -1;
+        std::vector<int> no_tagPairs;
         //int tags_size = tags.size();
         //int texts_size = text.size();
         //if (tags_size == texts_size) {
@@ -166,6 +167,7 @@
                                         if (tag == tags[check_SameTag]) {
                                             
                                             tagIndex = check_SameTag;
+                                            no_tagPairs[tagIndex]++;
                                             std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << " check_sametag: " << check_SameTag << std::endl;
                                             break;
                                         }
@@ -177,8 +179,10 @@
                                         }
                                         
                                     }
-                                    if (tagIndex == -1)
+                                    if (tagIndex == -1) {
                                         tags.push_back(tag);
+                                        no_tagPairs.push_back(1);
+                                    }
 
                                     std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << std::endl;
                                     //tags.push_back(tag);
@@ -267,41 +271,12 @@
         // std::vector<std::string> tag_struct;
         // std::vector<int> pairs;
 
-        if (tags.size() == text.size()) { 
+        if (tags.size() == text.size() and (tags.size() == no_tagPairs.size())) { 
             for (int i = 0; i < tags.size(); ++i) {
-                std::cout << "Tag: " << tags[i] << " Text: " << text[i] << std::endl;
-
+                std::cout << "Tag: " << tags[i] << " pairs: " << no_tagPairs[i] << " Text: " << text[i] << std::endl;
+                Tag.push_back({tags[i], no_tagPairs[i], text[i]});
             }
         }
-        //     //int counter = 0;
-
-                
-        //     char used = 'U';
-        //     for (int i = 0; i < tags.size(); ++i) {
-                    
-        //         int counter = i;
-        //         while (counter < tags.size()) {
-
-                            
-        //             if (tags[i] == tags[counter]) {
-
-        //                 tag_struct.push_back(tags[counter]);
-        //                 join_text.push_back(text[counter]);
-
-        //                 tags[i] = used;
-        //                 text[i] = used;
-                               
-        //             }
-
-        //             counter++;
-
-                        
-        //         }
-
-        //     }
-        // }
-            
-        
         else 
             std::cout << "Error: tags and text size doens't match" << std::endl;
 
@@ -332,7 +307,7 @@
         //             Tag[k_tag-1].tagText += " : " + text[i];
         //         }
         //         else                //if a new tag name is found
-        //             Tag.push_back({tags[i], 1, text[i]});  
+        //               
 
         //     }
 
@@ -364,9 +339,10 @@
                 std::cout << "No. of Tag Pairs: " << Tag[j].noTagPairs << std::endl;
                 std::cout << "Tag Text: " << Tag[j].tagText << std::endl;
                 found = true;
-            }
-            if (found == true)
                 break;
+            }
+            // if (found == true)
+            //     break;
         }
 
         //if the tag input could not be found
