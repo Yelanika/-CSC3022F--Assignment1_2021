@@ -31,33 +31,14 @@
         int max_no_nestedTag = 0;
         int tagIndex = -1;
         std::vector<int> no_tagPairs;
-        //int tags_size = tags.size();
-        //int texts_size = text.size();
-        //if (tags_size == texts_size) {
-
-            //int counter = 0;
-            //while ((tags_size != 0) and (texts_size != 0)) {
-                
-
-            //}
-        //}
-        //else 
-        //std::cout << "Error: The no. of tags and assciated texts are unequal" << std::endl;
 
         for (int lineNo = 0; lineNo < tagInfo.size(); ++lineNo) {      //going through each line of the textfile
 
             std::string TagInfo_currentLine = tagInfo[lineNo];    
-             
-            
-            //Testing
-            //if (lineNo == 6)
-              //  break;
-            bool found_ClosingTag = false; //to check if the end tag is found first
-            //std::string tag = " ";
-            std::size_t TagPos_Start = -1;
 
-            
-            
+            bool found_ClosingTag = false; //to check if the end tag is found first
+
+            std::size_t TagPos_Start = -1;
 
             if ((TagInfo_currentLine.length()) == 0)       //line is empty
                 //ends this iteration and goes to the next iteration
@@ -267,9 +248,6 @@
                 }
             }
         }
-        // std::vector <std::string> join_text;
-        // std::vector<std::string> tag_struct;
-        // std::vector<int> pairs;
 
         if (tags.size() == text.size() and (tags.size() == no_tagPairs.size())) { 
             for (int i = 0; i < tags.size(); ++i) {
@@ -281,39 +259,6 @@
             std::cout << "Error: tags and text size doens't match" << std::endl;
 
     }
-        
-        // Tag.push_back({tags[0], 1, text[0]});
-
-        // if (tags.size() > 1) {
-        //     for (int i = 1; i < tags.size(); ++i) {     //need to change i to different variable name
-                
-        //         bool found = false;
-        //         int k_tag;
-
-        //         //search for the same tag
-        //         for (k_tag = 1; k_tag < i+1; ++k_tag) { //k_tag = position of the tag in vector
-
-        //             //condition: to not check same tag against each other
-        //             if ((k_tag-1) != i) {
-        //                 if (tags[i] == tags[k_tag-1]) {
-        //                     found = true;
-        //                     break;      //break out of loop
-        //                 }
-        //             }
-        //         }
-                
-        //         if (found)  {       //if found is true
-        //             Tag[k_tag-1].noTagPairs++;
-        //             Tag[k_tag-1].tagText += " : " + text[i];
-        //         }
-        //         else                //if a new tag name is found
-        //               
-
-        //     }
-
-        // }
-        
-   // }
 
     /**** 
      * printTag() -  printing only the tags
