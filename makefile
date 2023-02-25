@@ -12,3 +12,4 @@ tag.o: tag.cpp
 
 clean:
 	rm *.o tagDriver.exe
+	rm tag.txt

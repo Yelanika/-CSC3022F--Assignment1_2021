@@ -14,6 +14,7 @@
 #include <sstream>
 #include <cctype>
 #include <algorithm>
+#include <fstream>
 
 //namespace GNSSEN002 {
     /***
@@ -56,10 +57,10 @@
                 while(notEmpty) {
                     switch(action) {
                         case 'a' : {    //option = assign
-                            std::cout << lineNo << " Assign: " << TagInfo_currentLine << std::endl;
+                            //std::cout << lineNo << " Assign: " << TagInfo_currentLine << std::endl;
                             if (TagInfo_currentLine.length() == 0)  {       //if line is empty
                                 notEmpty = false;
-                                std::cout << " " <<std::endl;
+                               // std::cout << " " <<std::endl;
                                 // std::cout << tags[tagCounter-1] << " " << text[tagCounter-1] << std::endl;
                                 // std::cout << " " <<std::endl;
                                 break;
@@ -91,7 +92,7 @@
                             break;
                         }
                         case 'b' : {    //option = tag
-                            std::cout << lineNo << " Tag: " << TagInfo_currentLine << std::endl;
+                           // std::cout << lineNo << " Tag: " << TagInfo_currentLine << std::endl;
                             //Checking for the beginning of a tag
                             //TagPos_Start = TagInfo_currentLine.find("<");
 
@@ -149,7 +150,7 @@
                                             
                                             tagIndex = check_SameTag;
                                             no_tagPairs[tagIndex]++;
-                                            std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << " check_sametag: " << check_SameTag << std::endl;
+                                       //     std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << " check_sametag: " << check_SameTag << std::endl;
                                             break;
                                         }
                                         else{
@@ -165,7 +166,7 @@
                                         no_tagPairs.push_back(1);
                                     }
 
-                                    std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << std::endl;
+                                   // std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << std::endl;
                                     //tags.push_back(tag);
                                     tagCounter++;
                                     no_nestedTag++;
@@ -180,7 +181,7 @@
                             break;
                         }
                         case 'c' : {    //option = text
-                            std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
+                          //  std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
                             std::string tagInfo = "";
 
                             //if (TagInfo_currentLine == "")
@@ -214,7 +215,7 @@
                                     tabFound = false;
                             }
 
-                            std::cout << lineNo << " Text: " << tagInfo << " tag index: " << tagIndex << " sameline: " << sameLine << std::endl;
+                          //  std::cout << lineNo << " Text: " << tagInfo << " tag index: " << tagIndex << " sameline: " << sameLine << std::endl;
                             //comment out
                             // if ((no_nestedTag == 1) and (sameLine == false))  {
                             //     text.push_back(tagInfo);
@@ -234,10 +235,10 @@
                                // std::cout << "Error 3" << std::endl;
                                 //text[tagCounter - no_nestedTag] += tagInfo;
                                 text[tagIndex] += " : " + tagInfo;
-                                std::cout << lineNo << " Text: " << text[tagIndex] << std::endl;
+                             //   std::cout << lineNo << " Text: " << text[tagIndex] << std::endl;
                                // std::cout << "Error 4" << std::endl;
                             }
-                            std::cout << lineNo << " Text: " << tagInfo << std::endl;
+                          //  std::cout << lineNo << " Text: " << tagInfo << std::endl;
                             tagInText = false;
                             action = 'a';   //option = assign
                             break;
@@ -289,7 +290,7 @@
             // if (found == true)
             //     break;
         }
-
+        
         //if the tag input could not be found
         if (found == false)
             std::cout << "The tag '" << inputTagName << "' could not be found." << std::endl;
@@ -299,11 +300,15 @@
      * writeTagInfoToFile() -  writing tag data to a file called tag.txt
      * [option d]
      * **/
-    void writeTagInfoToFile() {
+    void GNSSEN002::writeTagInfoToFile() {
+
+        std::ofstream out("tag.txt");
         
-        // for (int j = 0; j < Tag.size(); ++j) {
-        //     std::cout << Tag[j].tagName << std::endl;
-        // }
+        for (int j = 0; j < Tag.size(); ++j) {
+            out << "\"" << Tag[j].tagName << "\"," << Tag[j].noTagPairs << ",\"" << Tag[j].tagText << "\"" << std::endl;
+        }
+
+        out.close();
     }
     
 //}   
