@@ -101,6 +101,7 @@
                                     }
                                 }
                                 else {  //there is no tag in the line, just text
+                                    sameLine = true;
                                     action ='c';
                                     break;
                                 }
@@ -132,6 +133,7 @@
                                     if (test_tag_open != std::string::npos) {
                                         test_tag = test_tag.substr(test_tag_open+1,test_tag.size());
                                         tagInText = true;
+                                        sameLine = true;
                                         TagPos_Start = test_tag_open;
                                         action = 'c';
                                     }
