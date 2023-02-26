@@ -203,12 +203,14 @@
                                     tabFound = false;
                             }
 
-                            std::cout << lineNo << " Text: " << tagInfo << " tag index: " << tagIndex << " flag: " << flag_openTag << " tagExists: " << tagExists << " nested: " << nestedTags.size() << std::endl;
+                            std::cout << lineNo << " Text: " << tagInfo << " tag index: " << tagIndex << " flag: " << flag_openTag << " tagExists: " << tagExists << " nested: " << nestedTags.size() << " tag size: " << tags.size() << " text size: " << text.size() << std::endl;
                            
                             if (tagIndex == -1) {   
                                 //Adding new tag infomation
+                                if ((tags.size() -text.size()) > 1)
+                                    text.push_back("");
                                 text.push_back(tagInfo);
-                                tagIndex = text.size() -1; 
+                                tagIndex = tags.size() -1; 
                             }
                             else if ((flag_openTag == true) and (tagExists == true)) {
                                 //Adding infomation to an exisiting tag with :
@@ -243,6 +245,13 @@
                 }
             }
         }
+
+        std::cout << "Tag: " << tags.size() << " pairs: " << no_tagPairs.size() << " Text: " << text.size() << std::endl;
+
+        for (int i = 0; i < tags.size()-1; ++i) {
+                std::cout << "Tag: " << tags[i] << " pairs: " << no_tagPairs[i] << " Text: " << text[i] << std::endl;
+                
+            }
 
         //Allocating Tag, no. of tag pairs and tag text to the TagStruct variables
         if (tags.size() == text.size() and (tags.size() == no_tagPairs.size())) { 
