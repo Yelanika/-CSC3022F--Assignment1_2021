@@ -36,6 +36,10 @@
         bool flag_openTag;
         bool tagExists;
 
+        while (Tag.size() > 0) {        //clear Tag info of the previous file
+                Tag.pop_back();
+        }
+
         for (int lineNo = 0; lineNo < tagInfo.size(); ++lineNo) {      //going through each line of the textfile
 
             std::string TagInfo_currentLine = tagInfo[lineNo];      //current line of file
@@ -58,16 +62,15 @@
                 // case 'a' - Assignment to tag 'b' or 'c' based on line infomation
                 // case 'b' - A tag has been found
                 // case 'c' - Tag info has been found
-
                 
                 //while loop going through each line              
                 while(notEmpty) {
                     switch(action) {
                         case 'a' : {    //option assign
-                            //std::cout << lineNo << " Assign: " << TagInfo_currentLine << std::endl;
+                            std::cout << lineNo << " Assign: " << TagInfo_currentLine << std::endl;
                             if (TagInfo_currentLine.length() == 0)  {       //if line is empty move onto next line
                                 notEmpty = false;
-                               // std::cout << " " <<std::endl;
+                                std::cout << " " <<std::endl;
                                 // std::cout << tags[tagCounter-1] << " " << text[tagCounter-1] << std::endl;
                                 // std::cout << " " <<std::endl;
                                 break;
@@ -97,7 +100,7 @@
                             break;
                         }
                         case 'b' : {    //option = tag
-                           // std::cout << lineNo << " Tag: " << TagInfo_currentLine << std::endl;
+                            std::cout << lineNo << " Tag: " << TagInfo_currentLine << std::endl;
 
                             //if there is a tag in the current line
                             if (TagPos_Start != std::string::npos) {
@@ -132,17 +135,8 @@
                                 //if only tag left in the current line
                                 std::size_t find_ClosingTag = tag.find("/");    //check if tag is a closing tag
                                 if (find_ClosingTag != std::string::npos) {
-                                    // if (no_nestedTag > 1) {
-                                    //     if (max_no_nestedTag < no_nestedTag)
-                                    //         max_no_nestedTag = no_nestedTag;
-                                    // }
-                                    //no_nestedTag--;
-                                    //sameLine = false;
-                                    //nestedTags.pop;
                                     nestedTags.pop_back();
                                     flag_openTag = false;
-                                   
-                                    
                                 }
                                 else {            //opening tag
                                     nestedTags.push_back(tag);
@@ -181,7 +175,7 @@
                             break;
                         }
                         case 'c' : {    //option = text
-                          //  std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
+                            std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
                             std::string tagInfo = "";
 
                             if (tagInText == true) {     //there is a tag after the text
@@ -209,7 +203,7 @@
                                     tabFound = false;
                             }
 
-                          //  std::cout << lineNo << " Text: " << tagInfo << " tag index: " << tagIndex << " sameline: " << sameLine << std::endl;
+                            std::cout << lineNo << " Text: " << tagInfo << " tag index: " << tagIndex << " flag: " << flag_openTag << " tagExists: " << tagExists << " nested: " << nestedTags.size() << std::endl;
                            
                             if (tagIndex == -1) {   
                                 //Adding new tag infomation
@@ -226,8 +220,11 @@
                             }
                             else if (flag_openTag == false) {
                                 //Addind additional infomation to a nested open tag
-                                std::string nestedTag = nestedTags[nestedTag.size() - 1];
+                                std::cout << "here" << std::endl;
+                                std::string nestedTag = nestedTags[nestedTags.size() - 1];
+                                std::cout << nestedTag << std::endl;
                                 for (int nested = 0; nested < tags.size(); ++nested) {
+                                    std::cout << tags[nested] << std::endl; 
                                     if (nestedTag == tags[nested]) { 
                                         tagIndex = nested;
                                         break;
@@ -254,8 +251,9 @@
                 Tag.push_back({tags[i], no_tagPairs[i], text[i]});
             }
         }
-        else        //if there is an error and the size of the tag vector, no. of pairs vector and tag text vector do not match
+        else     //if there is an error and the size of the tag vector, no. of pairs vector and tag text vector do not match
             std::cout << "Error: tags and text size doens't match" << std::endl;
+
 
     }
 
