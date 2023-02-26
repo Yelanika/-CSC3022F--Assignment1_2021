@@ -15,7 +15,6 @@
 #include <sstream>
 #include <cstdlib>
 
-//namespace GNSSEN002 {}
 int main (int argc, char* argv[]) {
   
     char option = 'm';      // m - Menu
@@ -37,10 +36,10 @@ int main (int argc, char* argv[]) {
                     std::cout << "choose: ";
                     std::cin >> option;     //User input of option
 
-                    if ((option != 'r') or (option != 'p') or (option != 'd') or (option != 'l') or (option != 'q'))
+                    if ((option == 'r') or (option == 'p') or (option == 'd') or (option == 'l') or (option == 'q'))
                         break;
                     else {
-                        std::cout << "The option you have choosen does not exist, please try again." << std::endl;
+                        std::cout << " \n The option you have choosen does not exist, please try again. \n" << std::endl;
                         option = 'm';
                     }
                     

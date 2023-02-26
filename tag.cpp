@@ -16,20 +16,15 @@
 #include <algorithm>
 #include <fstream>
 
-//namespace GNSSEN002 {
     /***
-     * * ExtractTagsandText():
-     *      ` 
+     * * ExtractTagsandText() - Reading and processes input tag file
+     *  [option r] 
      * 
      * **/
     void GNSSEN002::ExtractTagsandText(std::vector<std::string> tagInfo) {
         
         std::vector<std::string> tags;
         std::vector<std::string> text; 
-        //int no_nestedTag = 0; 
-        //int tagCounter = 0;
-        //bool sameLine = false;
-        //int max_no_nestedTag = 0;
         int tagIndex = -1;
         std::vector<int> no_tagPairs;
         std::vector<std::string> nestedTags;
@@ -49,7 +44,7 @@
             std::size_t TagPos_Start = -1;
 
             if ((TagInfo_currentLine.length()) == 0)       //line is empty
-                //ends this iteration and goes to the next iteration
+                //ends this iteration and goes to the next line
                 continue;
             else {              //else capture the data in the line
 
@@ -67,14 +62,10 @@
                 while(notEmpty) {
                     switch(action) {
                         case 'a' : {    //option assign
-                            std::cout << lineNo << " Assign: " << TagInfo_currentLine << std::endl;
+
                             if (TagInfo_currentLine.length() == 0)  {       //if line is empty move onto next line
                                 notEmpty = false;
-                                std::cout << " " <<std::endl;
-                                // std::cout << tags[tagCounter-1] << " " << text[tagCounter-1] << std::endl;
-                                // std::cout << " " <<std::endl;
                                 break;
-                                //continue;
                             }
                             else {
                                 TagPos_Start = TagInfo_currentLine.find("<");                                
@@ -99,8 +90,7 @@
                             }
                             break;
                         }
-                        case 'b' : {    //option = tag
-                            std::cout << lineNo << " Tag: " << TagInfo_currentLine << std::endl;
+                        case 'b' : {    //option tag
 
                             //if there is a tag in the current line
                             if (TagPos_Start != std::string::npos) {
@@ -120,7 +110,8 @@
                                         test_tag = test_tag.substr(test_tag_open+1,test_tag.size());
                                         tagInText = true;
                                         TagPos_Start = test_tag_open;
-                                        action = 'c';           //if inner < exists, add pre-text to the open tag info
+                                        //if inner < exists, add pre-text to the open tag info
+                                        action = 'c';           //assign = text
                                     }
                                     else {
                                         inner_bracket = false;
@@ -146,13 +137,10 @@
                                             
                                             tagIndex = check_SameTag;           
                                             no_tagPairs[tagIndex]++;
-                                       //     std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << " check_sametag: " << check_SameTag << std::endl;
                                             break;
                                         }
                                         else{
                                             tagIndex = - 1;     //a new tag has been found
-                                            //std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << std::endl;
-                                            //break;
                                         }
                                     }
                                     if (tagIndex == -1) {       
@@ -162,48 +150,33 @@
                                     }
                                     else    
                                         tagExists = true;       //indicating the opening tag already exists in the tag vector
-                                    //nestedTags.push_back(tag);
-
-                                   // std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << std::endl;
-                                    //tags.push_back(tag);
-                                    //no_nestedTag++;
                                 }
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_End+1); 
-                                //std::cout << lineNo << " Tag: no_nestedTag: " << no_nestedTag << " tag index: " << tagIndex << std::endl;
                             }
                             action = 'a';    //option = assign
                             break;
                         }
                         case 'c' : {    //option = text
-                            std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
+                            
                             std::string tagInfo = "";
 
                             if (tagInText == true) {     //there is a tag after the text
-                                //std::size_t TagPos_Start = TagInfo_currentLine.find("<");       //comment out
-                               // std::cout << lineNo << " Text: inside loop" << std::endl;
                                 tagInfo = TagInfo_currentLine.substr(0,TagPos_Start);
-                               // std::cout << lineNo << " Text: " << tagInfo << std::endl;
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_Start);
-                                //std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
                             }
                             else { //no tag in text
                                 tagInfo = TagInfo_currentLine;
-                                //std::cout << "Error 1" << std::endl;
                                 TagInfo_currentLine = TagInfo_currentLine.substr(tagInfo.size());
-                               // std::cout << "Error 2" << std::endl;
                             }
                             
                             bool tabFound = true;
                             while (tabFound) {          //checking whether there is tab spaces before text appears
                                 if (tagInfo[0] == '\t') {
-                                    //tagInfo += " ";
                                     tagInfo = tagInfo.substr(1, tagInfo.size());
                                 }
                                 else
                                     tabFound = false;
                             }
-
-                            std::cout << lineNo << " Text: " << tagInfo << " tag index: " << tagIndex << " flag: " << flag_openTag << " tagExists: " << tagExists << " nested: " << nestedTags.size() << " tag size: " << tags.size() << " text size: " << text.size() << std::endl;
                            
                             if (tagIndex == -1) {   
                                 //Adding new tag infomation
@@ -221,12 +194,9 @@
                                 text[tagIndex] += tagInfo;
                             }
                             else if (flag_openTag == false) {
-                                //Addind additional infomation to a nested open tag
-                                std::cout << "here" << std::endl;
+                                //Adding additional infomation to a nested open tag
                                 std::string nestedTag = nestedTags[nestedTags.size() - 1];
-                                std::cout << nestedTag << std::endl;
                                 for (int nested = 0; nested < tags.size(); ++nested) {
-                                    std::cout << tags[nested] << std::endl; 
                                     if (nestedTag == tags[nested]) { 
                                         tagIndex = nested;
                                         break;
@@ -234,9 +204,8 @@
                                 }
                                 text[tagIndex] += tagInfo;
                             }
-                          //  std::cout << lineNo << " Text: " << tagInfo << std::endl;
                             tagInText = false;
-                            action = 'a';   //option assign
+                            action = 'a';   //option = assign
                             break;
                         }
                         default:
@@ -246,24 +215,15 @@
             }
         }
 
-        std::cout << "Tag: " << tags.size() << " pairs: " << no_tagPairs.size() << " Text: " << text.size() << std::endl;
-
-        for (int i = 0; i < tags.size()-1; ++i) {
-                std::cout << "Tag: " << tags[i] << " pairs: " << no_tagPairs[i] << " Text: " << text[i] << std::endl;
-                
-            }
-
         //Allocating Tag, no. of tag pairs and tag text to the TagStruct variables
         if (tags.size() == text.size() and (tags.size() == no_tagPairs.size())) { 
             for (int i = 0; i < tags.size(); ++i) {
-                std::cout << "Tag: " << tags[i] << " pairs: " << no_tagPairs[i] << " Text: " << text[i] << std::endl;
+                //std::cout << "Tag: " << tags[i] << " pairs: " << no_tagPairs[i] << " Text: " << text[i] << std::endl;
                 Tag.push_back({tags[i], no_tagPairs[i], text[i]});
             }
         }
         else     //if there is an error and the size of the tag vector, no. of pairs vector and tag text vector do not match
             std::cout << "Error: tags and text size doens't match" << std::endl;
-
-
     }
 
     /**** 
@@ -271,7 +231,8 @@
      * [option p]
      * **/
     void GNSSEN002::printTag() {
-
+        
+        //looping through and printing out tag names only
         for (int j = 0; j < Tag.size(); ++j) {
             std::cout << Tag[j].tagName << std::endl;
         }
@@ -307,11 +268,10 @@
 
         std::ofstream out("tag.txt");
         
+        //Looping through tag data and writng it to a file
         for (int j = 0; j < Tag.size(); ++j) {
             out << "\"" << Tag[j].tagName << "\"," << Tag[j].noTagPairs << ",\"" << Tag[j].tagText << "\"" << std::endl;
         }
 
         out.close();
-    }
-    
-//}   
+    } 
