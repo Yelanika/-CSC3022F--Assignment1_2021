@@ -43,9 +43,7 @@ int main (int argc, char* argv[]) {
                         std::cout << "The option you have choosen does not exist, please try again." << std::endl;
                         option = 'm';
                     }
-                        
-
-                    // << option << std::endl;
+                    
                     break;
                 }
                 case 'r' : {            //Getting input file 
@@ -75,9 +73,7 @@ int main (int argc, char* argv[]) {
                     //END OF READING FILE
 
                     if (tagInfo.size() > 0) {   //if there is infomation int the textfile
-                       // std::cout << "Tags and text" << std::endl; //for testing
                         GNSSEN002::ExtractTagsandText(tagInfo);
-                        //std::cout << Tag[0].tagName << std::endl;
                         fileExists = true;
                         std::cout << "Your file " << filename << " has been loaded successfully." << std::endl;
                     }
@@ -99,7 +95,6 @@ int main (int argc, char* argv[]) {
                         std::cout << "File does not exist." << std::endl;
                         std::cout << "Please use the option 'r' to input a file." << std::endl;
                     }
-                    //std::cout << "just tags" << std::endl;  //testing
 
                     std::cout << " " << std::endl;
 
@@ -132,7 +127,6 @@ int main (int argc, char* argv[]) {
                         std::cout << "Please enter a tag name: " << std::endl;
                         std::cin >> tagInput;
                         GNSSEN002::printTagInfo(tagInput);
-                    //std::cout << "printing tag info" << std::endl;  //testing
                     }
                     else  {
                         std::cout << "File does not exist." << std::endl;

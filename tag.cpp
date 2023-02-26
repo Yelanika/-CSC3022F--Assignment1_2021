@@ -26,12 +26,13 @@
         
         std::vector<std::string> tags;
         std::vector<std::string> text; 
-        int no_nestedTag = 0; 
-        int tagCounter = 0;
-        bool sameLine = false;
-        int max_no_nestedTag = 0;
+        //int no_nestedTag = 0; 
+        //int tagCounter = 0;
+        //bool sameLine = false;
+        //int max_no_nestedTag = 0;
         int tagIndex = -1;
         std::vector<int> no_tagPairs;
+        std::vector<std::string> nestedTags;
 
         for (int lineNo = 0; lineNo < tagInfo.size(); ++lineNo) {      //going through each line of the textfile
 
@@ -52,8 +53,7 @@
                 bool tagInText = false;
 
                 
-                //for loop going through each line
-                //nestedTag_no                
+                //while loop going through each line              
                 while(notEmpty) {
                     switch(action) {
                         case 'a' : {    //option = assign
@@ -73,7 +73,6 @@
                                 if (TagPos_Start != std::string::npos) {
 
                                     if (TagPos_Start == 0) {    //if tag is in the first position
-                                    //if (counter == 0)
                                         action = 'b';//option:tag
                                         break;
                                     }
@@ -84,7 +83,6 @@
                                     }
                                 }
                                 else {  //there is no tag in the line, just text
-                                    sameLine = true;
                                     action ='c';
                                     break;
                                 }
@@ -93,19 +91,13 @@
                         }
                         case 'b' : {    //option = tag
                            // std::cout << lineNo << " Tag: " << TagInfo_currentLine << std::endl;
-                            //Checking for the beginning of a tag
-                            //TagPos_Start = TagInfo_currentLine.find("<");
 
                             //if there is a tag in the current line
                             if (TagPos_Start != std::string::npos) {
             
                                 std::size_t TagPos_End = TagInfo_currentLine.find(">");   //finding the end of the tag 
-                                //if (TagPos_End != std::string::npos)
-                                    //action =  'c';
-                                    //breakk;????
                                 std::string tag = TagInfo_currentLine.substr(TagPos_Start,TagPos_End-TagPos_Start+1); 
 
-                                //put code here
                                 bool inner_bracket = true;
                                 std::size_t test_tag_open = -1;
                                 std::string test_tag = tag.substr(1,tag.size());
@@ -116,7 +108,6 @@
                                     if (test_tag_open != std::string::npos) {
                                         test_tag = test_tag.substr(test_tag_open+1,test_tag.size());
                                         tagInText = true;
-                                        sameLine = true;
                                         TagPos_Start = test_tag_open;
                                         action = 'c';
                                     }
@@ -137,10 +128,9 @@
                                     //     if (max_no_nestedTag < no_nestedTag)
                                     //         max_no_nestedTag = no_nestedTag;
                                     // }
-                                    no_nestedTag--;
-                                    sameLine = false;
-                                    // if (no_nestedTag == 0) 
-                                    //     max_no_nestedTag = 0;
+                                    //no_nestedTag--;
+                                    //sameLine = false;
+                                    //nestedTags.pop;
                                    
                                     
                                 }
@@ -154,22 +144,20 @@
                                             break;
                                         }
                                         else{
-                                            
                                             tagIndex = - 1;
                                             //std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << std::endl;
                                             //break;
                                         }
-                                        
                                     }
                                     if (tagIndex == -1) {
                                         tags.push_back(tag);
                                         no_tagPairs.push_back(1);
                                     }
+                                    //nestedTags.push_back(tag);
 
                                    // std::cout << lineNo << " Tag: " << tag << " tag index: " << tagIndex << std::endl;
                                     //tags.push_back(tag);
-                                    tagCounter++;
-                                    no_nestedTag++;
+                                    //no_nestedTag++;
                                 }
                                 TagInfo_currentLine = TagInfo_currentLine.substr(TagPos_End+1); 
                                 //std::cout << lineNo << " Tag: no_nestedTag: " << no_nestedTag << " tag index: " << tagIndex << std::endl;
@@ -183,11 +171,6 @@
                         case 'c' : {    //option = text
                           //  std::cout << lineNo << " Text: " << TagInfo_currentLine << std::endl;
                             std::string tagInfo = "";
-
-                            //if (TagInfo_currentLine == "")
-                                //text.pushback("");
-                                //action = 'a';
-                                //break;
 
                             if (tagInText == true) {     //there is a tag after the text
                                 //std::size_t TagPos_Start = TagInfo_currentLine.find("<");       //comment out
@@ -209,35 +192,33 @@
                             
 
                             while (tabFound) {
-                                if (tagInfo[0] == '\t') 
+                                if (tagInfo[0] == '\t') {
+                                    //tagInfo += " ";
                                     tagInfo = tagInfo.substr(1, tagInfo.size());
+                                }
                                 else
                                     tabFound = false;
                             }
 
                           //  std::cout << lineNo << " Text: " << tagInfo << " tag index: " << tagIndex << " sameline: " << sameLine << std::endl;
-                            //comment out
-                            // if ((no_nestedTag == 1) and (sameLine == false))  {
-                            //     text.push_back(tagInfo);
-                            //     sameLine = true;
-                            // }
+                           
                             if (tagIndex == -1) {
                                 text.push_back(tagInfo);
                                 tagIndex = text.size() -1; 
                             }
-                            else if ((sameLine == true)) {
-                            // else if ((no_nestedTag == 1) and (sameLine == true)) {
-                                //text[tagCounter - 1] += " " + tagInfo;
-                                text[tagIndex] += " " + tagInfo;
-                            }
+                            // else if ((sameLine == true)) {
+                            // // else if ((no_nestedTag == 1) and (sameLine == true)) {
+                            //     //text[tagCounter - 1] += " " + tagInfo;
+                            //     text[tagIndex] += " " + tagInfo;
+                            // }
                             
-                            else {  //text not in the sameLine and there is an tagIndex
-                               // std::cout << "Error 3" << std::endl;
-                                //text[tagCounter - no_nestedTag] += tagInfo;
-                                text[tagIndex] += " : " + tagInfo;
-                             //   std::cout << lineNo << " Text: " << text[tagIndex] << std::endl;
-                               // std::cout << "Error 4" << std::endl;
-                            }
+                            // else {  //text not in the sameLine and there is an tagIndex
+                            //    // std::cout << "Error 3" << std::endl;
+                               
+                            //     text[tagIndex] += " : " + tagInfo;
+                            //  //   std::cout << lineNo << " Text: " << text[tagIndex] << std::endl;
+                            //    // std::cout << "Error 4" << std::endl;
+                            // }
                           //  std::cout << lineNo << " Text: " << tagInfo << std::endl;
                             tagInText = false;
                             action = 'a';   //option = assign
