@@ -191,7 +191,7 @@
                             }
                             else if (flag_openTag == true) {
                                 //Adding additional infomation to an open tag
-                                text[tagIndex] += tagInfo;
+                                text[tagIndex] += " " + tagInfo;
                             }
                             else if (flag_openTag == false) {
                                 //Adding additional infomation to a nested open tag
@@ -202,7 +202,7 @@
                                         break;
                                     }
                                 }
-                                text[tagIndex] += tagInfo;
+                                text[tagIndex] += " " + tagInfo;
                             }
                             tagInText = false;
                             action = 'a';   //option = assign
